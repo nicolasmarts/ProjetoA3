@@ -1,7 +1,7 @@
 package DAO;
 
+import Model.HistoricoPersonalizado;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,71 +9,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmprestimoDAO {
-    
     private Connection connection;
 
     public EmprestimoDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public void addEmprestimo(Emprestimo emprestimo) throws SQLException {
-        String sql = "INSERT INTO Emprestimo (dataPrevistaDevolucao, dataRetirada) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setDate(1, new Date(emprestimo.getDataPrevistaDevolucao().getTime()));
-            stmt.setDate(2, new Date(emprestimo.getDataRetirada().getTime()));
-            stmt.executeUpdate();
+    public boolean adicionarEmprestimo(HistoricoPersonalizado emprestimo) {
+        String query = "INSERT INTO tabela_emprestimo (nomeAmigo, nomeFerramenta, marcaFerramenta, idEmprestimo, dataEmprestimo, dataEntregaPrevista, dataEntregaEfetiva) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, emprestimo.getNomeAmigo());
+            stmt.setString(2, emprestimo.getNomeFerramenta());
+            stmt.setString(3, emprestimo.getMarcaFerramenta());
+            stmt.setInt(4, emprestimo.getIdEmprestimo());
+            stmt.setDate(5, new java.sql.Date(emprestimo.getDataEmprestimo().getTime()));
+            stmt.setDate(6, new java.sql.Date(emprestimo.getDataEntregaPrevista().getTime()));
+            stmt.setDate(7, new java.sql.Date(emprestimo.getDataEntregaEfetiva().getTime()));
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 
-    public List<Emprestimo> getAllEmprestimos() throws SQLException {
-        List<Emprestimo> emprestimos = new ArrayList<>();
-        String sql = "SELECT * FROM Emprestimo";
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
+    public List<HistoricoPersonalizado> listarEmprestimos() {
+        List<HistoricoPersonalizado> emprestimos = new ArrayList<>();
+        String query = "SELECT * FROM tabela_emprestimo";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Emprestimo emprestimo = new Emprestimo();
-                emprestimo.setId(rs.getInt("id"));
-                emprestimo.setDataPrevistaDevolucao(rs.getDate("dataPrevistaDevolucao"));
-                emprestimo.setDataRetirada(rs.getDate("dataRetirada"));
+                HistoricoPersonalizado emprestimo = new HistoricoPersonalizado(
+                        rs.getString("nomeAmigo"),
+                        rs.getString("nomeFerramenta"),
+                        rs.getString("marcaFerramenta"),
+                        rs.getInt("idEmprestimo"),
+                        rs.getDate("dataEmprestimo"),
+                        rs.getDate("dataEntregaPrevista"),
+                        rs.getDate("dataEntregaEfetiva")
+                );
                 emprestimos.add(emprestimo);
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return emprestimos;
     }
-
-    public Emprestimo getEmprestimoById(int id) throws SQLException {
-        String sql = "SELECT * FROM Emprestimo WHERE id = ?";
-        Emprestimo emprestimo = null;
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    emprestimo = new Emprestimo();
-                    emprestimo.setId(rs.getInt("id"));
-                    emprestimo.setDataPrevistaDevolucao(rs.getDate("dataPrevistaDevolucao"));
-                    emprestimo.setDataRetirada(rs.getDate("dataRetirada"));
-                }
-            }
-        }
-        return emprestimo;
-    }
-
-    public void updateEmprestimo(Emprestimo emprestimo) throws SQLException {
-        String sql = "UPDATE Emprestimo SET dataPrevistaDevolucao = ?, dataRetirada = ? WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setDate(1, new Date(emprestimo.getDataPrevistaDevolucao().getTime()));
-            stmt.setDate(2, new Date(emprestimo.getDataRetirada().getTime()));
-            stmt.setInt(3, emprestimo.getId());
-            stmt.executeUpdate();
-        }
-    }
-
-    public void deleteEmprestimo(int id) throws SQLException {
-        String sql = "DELETE FROM Emprestimo WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
-    }
 }
-

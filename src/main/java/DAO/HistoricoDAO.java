@@ -1,113 +1,73 @@
 package DAO;
 
-import Model.Amigo;
-import Model.Emprestimo;
-import Model.Ferramenta;
 import Model.Historico;
-
+import Model.Amigo;
+import Model.Ferramenta;
+import Model.Emprestimo;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HistoricoDAO {
-
     private Connection connection;
 
     public HistoricoDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public void addHistorico(Historico historico) throws SQLException {
-        String sql = "INSERT INTO Historico (amigo_id, ferramenta_id, emprestimo_id, dataEfetivaDevolucao) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, historico.getAmigo().getId());
+    public boolean adicionarHistorico(Historico historico) {
+        String query = "INSERT INTO tabela_historico (id_amigo, id_ferramenta, id_emprestimo, data_efetiva_devolucao) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(2, historico.getFerramenta().getId());
             stmt.setInt(3, historico.getEmprestimo().getId());
-            stmt.setDate(4, new Date(historico.getDataEfetivaDevolucao().getTime()));
-            stmt.executeUpdate();
+            stmt.setDate(4, new java.sql.Date(historico.getDataEfetivaDevolucao().getTime()));
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 
-    public List<Historico> getAllHistoricos() throws SQLException {
+    public List<Historico> listarHistorico() {
         List<Historico> historicos = new ArrayList<>();
-        String sql = "SELECT * FROM Historico";
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
+        String query = "SELECT * FROM tabela_historico";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Historico historico = new Historico();
-                historico.setId(rs.getInt("id"));
-                
-                // Aqui você precisaria recuperar e instanciar os objetos Amigo, Ferramenta e Emprestimo com base nos seus IDs
-                Amigo amigo = new Amigo(); // Este seria recuperado do banco usando o AmigoDAO
-                amigo.setId(rs.getInt("amigo_id"));
-                historico.setAmigo(amigo);
-
-                Ferramenta ferramenta = new Ferramenta(); // Este seria recuperado do banco usando o FerramentaDAO
-                ferramenta.setId(rs.getInt("ferramenta_id"));
-                historico.setFerramenta(ferramenta);
-
-                Emprestimo emprestimo = new Emprestimo(); // Este seria recuperado do banco usando o EmprestimoDAO
-                emprestimo.setId(rs.getInt("emprestimo_id"));
-                historico.setEmprestimo(emprestimo);
-
-                historico.setDataEfetivaDevolucao(rs.getDate("dataEfetivaDevolucao"));
+                int id = rs.getInt("id");
+                Amigo amigo = buscarAmigoPorId(rs.getInt("id_amigo"));
+                Ferramenta ferramenta = buscarFerramentaPorId(rs.getInt("id_ferramenta"));
+                Emprestimo emprestimo = buscarEmprestimoPorId(rs.getInt("id_emprestimo"));
+                Date dataEfetivaDevolucao = rs.getDate("data_efetiva_devolucao");
+                Historico historico = new Historico(id, amigo, ferramenta, emprestimo, dataEfetivaDevolucao);
                 historicos.add(historico);
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return historicos;
     }
 
-    public Historico getHistoricoById(int id) throws SQLException {
-        String sql = "SELECT * FROM Historico WHERE id = ?";
-        Historico historico = null;
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    historico = new Historico();
-                    historico.setId(rs.getInt("id"));
-
-                    // Aqui você precisaria recuperar e instanciar os objetos Amigo, Ferramenta e Emprestimo com base nos seus IDs
-                    Amigo amigo = new Amigo(); // Este seria recuperado do banco usando o AmigoDAO
-                    amigo.setId(rs.getInt("amigo_id"));
-                    historico.setAmigo(amigo);
-
-                    Ferramenta ferramenta = new Ferramenta(); // Este seria recuperado do banco usando o FerramentaDAO
-                    ferramenta.setId(rs.getInt("ferramenta_id"));
-                    historico.setFerramenta(ferramenta);
-
-                    Emprestimo emprestimo = new Emprestimo(); // Este seria recuperado do banco usando o EmprestimoDAO
-                    emprestimo.setId(rs.getInt("emprestimo_id"));
-                    historico.setEmprestimo(emprestimo);
-
-                    historico.setDataEfetivaDevolucao(rs.getDate("dataEfetivaDevolucao"));
-                }
-            }
-        }
-        return historico;
+    private Amigo buscarAmigoPorId(int id) {
+        // Implemente a lógica para buscar o amigo pelo ID no banco de dados
+        // e retornar o objeto Amigo correspondente
+        return null;
     }
 
-    public void updateHistorico(Historico historico) throws SQLException {
-        String sql = "UPDATE Historico SET amigo_id = ?, ferramenta_id = ?, emprestimo_id = ?, dataEfetivaDevolucao = ? WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, historico.getAmigo().getId());
-            stmt.setInt(2, historico.getFerramenta().getId());
-            stmt.setInt(3, historico.getEmprestimo().getId());
-            stmt.setDate(4, new Date(historico.getDataEfetivaDevolucao().getTime()));
-            stmt.setInt(5, historico.getId());
-            stmt.executeUpdate();
-        }
+    private Ferramenta buscarFerramentaPorId(int id) {
+        // Implemente a lógica para buscar a ferramenta pelo ID no banco de dados
+        // e retornar o objeto Ferramenta correspondente
+        return null;
     }
 
-    public void deleteHistorico(int id) throws SQLException {
-        String sql = "DELETE FROM Historico WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
+    private Emprestimo buscarEmprestimoPorId(int id) {
+        // Implemente a lógica para buscar o empréstimo pelo ID no banco de dados
+        // e retornar o objeto Emprestimo correspondente
+        return null;
     }
 }
+
