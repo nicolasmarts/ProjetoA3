@@ -1,5 +1,1 @@
-package Principal;
-
-public class Principal {
-    
-}
+import javax.swing.JOptionPane;
