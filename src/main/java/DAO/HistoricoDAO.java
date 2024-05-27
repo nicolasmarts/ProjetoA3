@@ -1,73 +1,75 @@
 package DAO;
 
 import Model.Historico;
-import Model.Amigo;
-import Model.Ferramenta;
-import Model.Emprestimo;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HistoricoDAO {
     private Connection connection;
 
-    public HistoricoDAO(Connection connection) {
-        this.connection = connection;
+    public HistoricoDAO() throws SQLException {
+        this.connection = conexao.getConnection();
     }
 
-    public boolean adicionarHistorico(Historico historico) {
-        String query = "INSERT INTO tabela_historico (id_amigo, id_ferramenta, id_emprestimo, data_efetiva_devolucao) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(2, historico.getFerramenta().getId());
-            stmt.setInt(3, historico.getEmprestimo().getId());
-            stmt.setDate(4, new java.sql.Date(historico.getDataEfetivaDevolucao().getTime()));
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
+    public void adicionarHistorico(Historico historico) throws SQLException {
+        String sql = "INSERT INTO Historico (emprestimoId, dataDevolucao) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, historico.getEmprestimoId());
+            if (historico.getDataDevolucao() != null) {
+                statement.setDate(2, new Date(historico.getDataDevolucao().getTime()));
+            } else {
+                statement.setDate(2, null);
+            }
+            statement.executeUpdate();
         }
     }
 
-    public List<Historico> listarHistorico() {
+    public List<Historico> listarHistoricos() throws SQLException {
         List<Historico> historicos = new ArrayList<>();
-        String query = "SELECT * FROM tabela_historico";
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                Amigo amigo = buscarAmigoPorId(rs.getInt("id_amigo"));
-                Ferramenta ferramenta = buscarFerramentaPorId(rs.getInt("id_ferramenta"));
-                Emprestimo emprestimo = buscarEmprestimoPorId(rs.getInt("id_emprestimo"));
-                Date dataEfetivaDevolucao = rs.getDate("data_efetiva_devolucao");
-                Historico historico = new Historico(id, amigo, ferramenta, emprestimo, dataEfetivaDevolucao);
+        String sql = "SELECT * FROM Historico";
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Historico historico = new Historico();
+                historico.setId(resultSet.getInt("id"));
+                historico.setEmprestimoId(resultSet.getInt("emprestimoId"));
+                historico.setDataDevolucao(resultSet.getDate("dataDevolucao"));
                 historicos.add(historico);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
         return historicos;
     }
 
-    private Amigo buscarAmigoPorId(int id) {
-        // Implemente a lógica para buscar o amigo pelo ID no banco de dados
-        // e retornar o objeto Amigo correspondente
-        return null;
+    public void atualizarHistorico(Historico historico) throws SQLException {
+        String sql = "UPDATE Historico SET emprestimoId=?, dataDevolucao=? WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, historico.getEmprestimoId());
+            if (historico.getDataDevolucao() != null) {
+                statement.setDate(2, new Date(historico.getDataDevolucao().getTime()));
+            } else {
+                statement.setDate(2, null);
+            }
+            statement.setInt(3, historico.getId());
+            statement.executeUpdate();
+        }
     }
 
-    private Ferramenta buscarFerramentaPorId(int id) {
-        // Implemente a lógica para buscar a ferramenta pelo ID no banco de dados
-        // e retornar o objeto Ferramenta correspondente
-        return null;
+    public void removerHistorico(int id) throws SQLException {
+        String sql = "DELETE FROM Historico WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        }
     }
 
-    private Emprestimo buscarEmprestimoPorId(int id) {
-        // Implemente a lógica para buscar o empréstimo pelo ID no banco de dados
-        // e retornar o objeto Emprestimo correspondente
-        return null;
+    public void close() throws SQLException {
+        if (this.connection != null && !this.connection.isClosed()) {
+            this.connection.close();
+        }
     }
 }
-

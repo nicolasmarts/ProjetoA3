@@ -4,66 +4,40 @@ import java.util.Date;
 
 public class Historico {
     private int id;
-    private Amigo amigo;
-    private Ferramenta ferramenta;
-    private Emprestimo emprestimo;
-    private Date dataEfetivaDevolucao;
-    
-    public Historico() {
-    }
-    
-    public Historico(int id, Amigo amigo, Ferramenta ferramenta, Emprestimo emprestimo, Date dataEfetivaDevolucao) {
+    private int emprestimoId;
+    private Date dataDevolucao;
+
+    // Construtores, getters e setters
+
+    public Historico() {}
+
+    public Historico(int id, int emprestimoId, Date dataDevolucao) {
         this.id = id;
-        this.amigo = amigo;
-        this.ferramenta = ferramenta;
-        this.emprestimo = emprestimo;
-        this.dataEfetivaDevolucao = dataEfetivaDevolucao;
+        this.emprestimoId = emprestimoId;
+        this.dataDevolucao = dataDevolucao;
     }
-    
-    public Historico(Amigo amigo, Ferramenta ferramenta, Emprestimo emprestimo, Date dataEfetivaDevolucao) {
-        this.amigo = amigo;
-        this.ferramenta = ferramenta;
-        this.emprestimo = emprestimo;
-        this.dataEfetivaDevolucao = dataEfetivaDevolucao;
-    }
-    
+
     public int getId() {
         return id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
-    public Amigo getAmigo() {
-        return amigo;
+
+    public int getEmprestimoId() {
+        return emprestimoId;
     }
-    
-    public void setAmigo(Amigo amigo) {
-        this.amigo = amigo;
+
+    public void setEmprestimoId(int emprestimoId) {
+        this.emprestimoId = emprestimoId;
     }
-    
-    public Ferramenta getFerramenta() {
-        return ferramenta;
+
+    public Date getDataDevolucao() {
+        return dataDevolucao;
     }
-    
-    public void setFerramenta(Ferramenta ferramenta) {
-        this.ferramenta = ferramenta;
-    }
-    
-    public Emprestimo getEmprestimo() {
-        return emprestimo;
-    }
-    
-    public void setEmprestimo(Emprestimo emprestimo) {
-        this.emprestimo = emprestimo;
-    }
-    
-    public Date getDataEfetivaDevolucao() {
-        return dataEfetivaDevolucao;
-    }
-    
-    public void setDataEfetivaDevolucao(Date dataEfetivaDevolucao) {
-        this.dataEfetivaDevolucao = dataEfetivaDevolucao;
+
+    public void setDataDevolucao(Date dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
     }
 }

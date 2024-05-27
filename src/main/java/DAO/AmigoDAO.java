@@ -11,8 +11,8 @@ import Model.Amigo;
 public class AmigoDAO {
     private Connection connection;
 
-    public AmigoDAO(Connection connection) {
-        this.connection = connection;
+    public AmigoDAO() throws SQLException {
+        this.connection = conexao.getConnection();
     }
 
     public void adicionarAmigo(Amigo amigo) throws SQLException {
@@ -28,15 +28,14 @@ public class AmigoDAO {
     public List<Amigo> listarAmigos() throws SQLException {
         List<Amigo> amigos = new ArrayList<>();
         String sql = "SELECT * FROM amigos";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    String nome = resultSet.getString("nome");
-                    String telefone = resultSet.getString("telefone");
-                    String email = resultSet.getString("email");
-                    Amigo amigo = new Amigo(nome, telefone, email);
-                    amigos.add(amigo);
-                }
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                String nome = resultSet.getString("nome");
+                String telefone = resultSet.getString("telefone");
+                String email = resultSet.getString("email");
+                Amigo amigo = new Amigo(nome, telefone, email);
+                amigos.add(amigo);
             }
         }
         return amigos;

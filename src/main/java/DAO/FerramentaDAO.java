@@ -11,40 +11,50 @@ import java.util.List;
 public class FerramentaDAO {
     private Connection connection;
 
-    public FerramentaDAO(Connection connection) {
-        this.connection = connection;
+    public FerramentaDAO() throws SQLException {
+        this.connection = conexao.getConnection();
     }
 
-    public boolean adicionarFerramenta(Ferramenta ferramenta) {
-        String query = "INSERT INTO tabela_ferramenta (nome, marca, custo) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ferramenta.getNome());
-            stmt.setString(2, ferramenta.getMarca());
-            stmt.setDouble(3, ferramenta.getCusto());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
+    public void adicionarFerramenta(Ferramenta ferramenta) throws SQLException {
+        String sql = "INSERT INTO Ferramenta (nome, marca) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, ferramenta.getNome());
+            statement.setString(2, ferramenta.getMarca());
+            statement.executeUpdate();
         }
     }
 
-    public List<Ferramenta> listarFerramentas() {
+    public List<Ferramenta> listarFerramentas() throws SQLException {
         List<Ferramenta> ferramentas = new ArrayList<>();
-        String query = "SELECT * FROM tabela_ferramenta";
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Ferramenta ferramenta = new Ferramenta(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("marca"),
-                        rs.getDouble("custo")
-                );
+        String sql = "SELECT * FROM Ferramenta";
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Ferramenta ferramenta = new Ferramenta();
+                ferramenta.setId(resultSet.getInt("id"));
+                ferramenta.setNome(resultSet.getString("nome"));
+                ferramenta.setMarca(resultSet.getString("marca"));
                 ferramentas.add(ferramenta);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
         return ferramentas;
+    }
+
+    public void atualizarFerramenta(Ferramenta ferramenta) throws SQLException {
+        String sql = "UPDATE Ferramenta SET nome=?, marca=? WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, ferramenta.getNome());
+            statement.setString(2, ferramenta.getMarca());
+            statement.setInt(3, ferramenta.getId());
+            statement.executeUpdate();
+        }
+    }
+
+    public void removerFerramenta(int id) throws SQLException {
+        String sql = "DELETE FROM Ferramenta WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        }
     }
 }
