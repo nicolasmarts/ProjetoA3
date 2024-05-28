@@ -31,7 +31,6 @@ public class FRMPrincipal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -49,9 +48,6 @@ public class FRMPrincipal extends javax.swing.JFrame {
 
         jMenu3.setText("Registros");
         jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Agenda");
-        jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Sair");
         jMenuBar1.add(jMenu5);
@@ -118,7 +114,6 @@ public class FRMPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
