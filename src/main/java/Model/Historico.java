@@ -7,8 +7,6 @@ public class Historico {
     private int emprestimoId;
     private Date dataDevolucao;
 
-    // Construtores, getters e setters
-
     public Historico() {}
 
     public Historico(int id, int emprestimoId, Date dataDevolucao) {
