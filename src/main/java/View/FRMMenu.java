@@ -26,67 +26,101 @@ public class FRMMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLmenu_BemVindo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        jM_Cadastro = new javax.swing.JMenu();
+        jMIcadastro_amigos = new javax.swing.JMenuItem();
+        jMIcadastro_ferramentas = new javax.swing.JMenuItem();
+        jM_Registros = new javax.swing.JMenu();
+        jMIregistros_registrosemprestimos = new javax.swing.JMenuItem();
+        jM_Relatorios = new javax.swing.JMenu();
+        jMIrelatorios_ativos = new javax.swing.JMenuItem();
+        jMIrelatorios_ferramentas = new javax.swing.JMenuItem();
+        jMIrelatorios_todosrelatorios = new javax.swing.JMenuItem();
+        jM_Sair = new javax.swing.JMenu();
+        jMIsair_sairaplicativo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu");
 
-        jMenu1.setText("Cadastro");
+        jLmenu_BemVindo.setText("BEM VINDO!");
 
-        jMenuItem2.setText("Amigos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jM_Cadastro.setText("Cadastro");
+        jM_Cadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jM_CadastroActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
 
-        jMenuItem1.setText("Ferramentas");
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Relatórios");
-
-        jMenuItem3.setText("Ativos");
-        jMenu2.add(jMenuItem3);
-
-        jMenuItem4.setText("Ferramentas");
-        jMenu2.add(jMenuItem4);
-
-        jMenuItem5.setText("Todos os relatórios");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jMIcadastro_amigos.setText("Amigos");
+        jMIcadastro_amigos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jMIcadastro_amigosActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        jM_Cadastro.add(jMIcadastro_amigos);
 
-        jMenuBar1.add(jMenu2);
+        jMIcadastro_ferramentas.setText("Ferramentas");
+        jMIcadastro_ferramentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIcadastro_ferramentasActionPerformed(evt);
+            }
+        });
+        jM_Cadastro.add(jMIcadastro_ferramentas);
 
-        jMenu3.setText("Registros");
+        jMenuBar1.add(jM_Cadastro);
 
-        jMenuItem6.setText("Registros de empréstimos");
-        jMenu3.add(jMenuItem6);
+        jM_Registros.setText("Registros");
 
-        jMenuBar1.add(jMenu3);
+        jMIregistros_registrosemprestimos.setText("Registros de empréstimos");
+        jMIregistros_registrosemprestimos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIregistros_registrosemprestimosActionPerformed(evt);
+            }
+        });
+        jM_Registros.add(jMIregistros_registrosemprestimos);
 
-        jMenu5.setText("Sair");
+        jMenuBar1.add(jM_Registros);
 
-        jMenuItem8.setText("Sair do aplicativo");
-        jMenu5.add(jMenuItem8);
+        jM_Relatorios.setText("Relatórios");
 
-        jMenuBar1.add(jMenu5);
+        jMIrelatorios_ativos.setText("Ativos");
+        jMIrelatorios_ativos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIrelatorios_ativosActionPerformed(evt);
+            }
+        });
+        jM_Relatorios.add(jMIrelatorios_ativos);
+
+        jMIrelatorios_ferramentas.setText("Ferramentas");
+        jMIrelatorios_ferramentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIrelatorios_ferramentasActionPerformed(evt);
+            }
+        });
+        jM_Relatorios.add(jMIrelatorios_ferramentas);
+
+        jMIrelatorios_todosrelatorios.setText("Todos os relatórios");
+        jMIrelatorios_todosrelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIrelatorios_todosrelatoriosActionPerformed(evt);
+            }
+        });
+        jM_Relatorios.add(jMIrelatorios_todosrelatorios);
+
+        jMenuBar1.add(jM_Relatorios);
+
+        jM_Sair.setText("Sair");
+
+        jMIsair_sairaplicativo.setText("Sair do aplicativo");
+        jMIsair_sairaplicativo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIsair_sairaplicativoActionPerformed(evt);
+            }
+        });
+        jM_Sair.add(jMIsair_sairaplicativo);
+
+        jMenuBar1.add(jM_Sair);
 
         setJMenuBar(jMenuBar1);
 
@@ -94,23 +128,59 @@ public class FRMMenu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(154, 154, 154)
+                .addComponent(jLmenu_BemVindo)
+                .addContainerGap(180, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(116, 116, 116)
+                .addComponent(jLmenu_BemVindo)
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void jMIcadastro_amigosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIcadastro_amigosActionPerformed
+        FRMAmigos objeto = new FRMAmigos();
+        objeto.setVisible(true);
+    }//GEN-LAST:event_jMIcadastro_amigosActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void jMIrelatorios_todosrelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIrelatorios_todosrelatoriosActionPerformed
+        FRMHistorico objeto = new FRMHistorico();
+        objeto.setVisible(true);
+    }//GEN-LAST:event_jMIrelatorios_todosrelatoriosActionPerformed
+
+    private void jM_CadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jM_CadastroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_jM_CadastroActionPerformed
+
+    private void jMIcadastro_ferramentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIcadastro_ferramentasActionPerformed
+        FRMFerramentas objeto = new FRMFerramentas();
+        objeto.setVisible(true);
+    }//GEN-LAST:event_jMIcadastro_ferramentasActionPerformed
+
+    private void jMIrelatorios_ativosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIrelatorios_ativosActionPerformed
+        FRMRelatorioAtivos objeto = new FRMRelatorioAtivos();
+        objeto.setVisible(true);
+    }//GEN-LAST:event_jMIrelatorios_ativosActionPerformed
+
+    private void jMIsair_sairaplicativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIsair_sairaplicativoActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMIsair_sairaplicativoActionPerformed
+
+    private void jMIrelatorios_ferramentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIrelatorios_ferramentasActionPerformed
+        FRMRelatorioFerramentas objeto = new FRMRelatorioFerramentas();
+        objeto.setVisible(true);
+    }//GEN-LAST:event_jMIrelatorios_ferramentasActionPerformed
+
+    private void jMIregistros_registrosemprestimosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIregistros_registrosemprestimosActionPerformed
+        FRMRegistroEmprestimos objeto = new FRMRegistroEmprestimos();
+        objeto.setVisible(true);
+    }//GEN-LAST:event_jMIregistros_registrosemprestimosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,17 +218,18 @@ public class FRMMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu5;
+    private javax.swing.JLabel jLmenu_BemVindo;
+    private javax.swing.JMenuItem jMIcadastro_amigos;
+    private javax.swing.JMenuItem jMIcadastro_ferramentas;
+    private javax.swing.JMenuItem jMIregistros_registrosemprestimos;
+    private javax.swing.JMenuItem jMIrelatorios_ativos;
+    private javax.swing.JMenuItem jMIrelatorios_ferramentas;
+    private javax.swing.JMenuItem jMIrelatorios_todosrelatorios;
+    private javax.swing.JMenuItem jMIsair_sairaplicativo;
+    private javax.swing.JMenu jM_Cadastro;
+    private javax.swing.JMenu jM_Registros;
+    private javax.swing.JMenu jM_Relatorios;
+    private javax.swing.JMenu jM_Sair;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem8;
     // End of variables declaration//GEN-END:variables
 }
