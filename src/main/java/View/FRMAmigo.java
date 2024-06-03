@@ -4,17 +4,19 @@
  */
 package View;
 
+import Model.Amigo;
+import javax.swing.JOptionPane;
 /**
  *
  * @author 10723114087
  */
-public class FRMAmigos extends javax.swing.JFrame {
+public class FRMAmigo extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FRMAmigos
-     */
-    public FRMAmigos() {
+    private Amigo objetoamigo;
+    
+    public FRMAmigo() {
         initComponents();
+        this.objetoamigo = new Amigo();
     }
 
     /**
@@ -71,6 +73,11 @@ public class FRMAmigos extends javax.swing.JFrame {
         });
 
         jBamigo_cadastrar.setText("Cadastrar");
+        jBamigo_cadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBamigo_cadastrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,6 +161,44 @@ public class FRMAmigos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jBamigo_voltarActionPerformed
 
+    private void jBamigo_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBamigo_cadastrarActionPerformed
+        try {
+            String nome = "";
+            String telefone = "";
+            String email = "";
+            
+            if (this.jTFamigo_nome.getText().length() < 2) {
+                throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
+            } else {
+                nome = this.jTFamigo_nome.getText();
+            }
+            
+            if (this.jTFamigo_telefone.getText().length() <= 0) {
+                throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
+            } else {
+                telefone = this.jTFamigo_telefone.getText();
+            }
+            
+            if (this.jTFamigo_email.getText().length() < 2) {
+                throw new Mensagens("E-mail deve conter ao menos 2 caracteres.");
+            } else {
+                email = this.jTFamigo_email.getText();
+            }
+            
+            if (this.objetoamigo.insertAmigoBD(nome, telefone, email)) {
+                JOptionPane.showMessageDialog(null, "Aluno Cadastrado com Sucesso!");
+                this.jTFamigo_nome.setText("");
+                this.jTFamigo_telefone.setText("");
+                this.jTFamigo_email.setText("");
+            }
+            System.out.println(this.objetoamigo.getMinhaLista().toString());
+        } catch (Mensagens erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        } catch (NumberFormatException erro2) {
+            JOptionPane.showMessageDialog(null, "Informe um número válido.");
+        }
+    }//GEN-LAST:event_jBamigo_cadastrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -171,20 +216,21 @@ public class FRMAmigos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FRMAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMAmigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FRMAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMAmigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FRMAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMAmigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMAmigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FRMAmigos().setVisible(true);
+                new FRMAmigo().setVisible(true);
             }
         });
     }

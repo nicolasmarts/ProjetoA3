@@ -1,20 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
 
-/**
- *
- * @author 1072324171
- */
-public class FRMRelatorioAtivos extends javax.swing.JFrame {
+import Model.Amigo;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-    /**
-     * Creates new form FRMRelatorioAtivos
-     */
+public class FRMRelatorioAtivos extends javax.swing.JFrame {
+    
+    private Amigo objetoamigo;
+    
     public FRMRelatorioAtivos() {
         initComponents();
+        this.objetoamigo = new Amigo();
+        this.carregaTabela();
     }
 
     /**
@@ -50,6 +48,20 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
                 "Nome", "Ferramenta", "Status", "Data", "Prev. Entrega"
             }
         ));
+        jTativos.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jTativosAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jTativos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTativosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTativos);
 
         jBrelatorioAtivos_voltar.setText("Voltar");
@@ -81,10 +93,40 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void jBrelatorioAtivos_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBrelatorioAtivos_voltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBrelatorioAtivos_voltarActionPerformed
 
+    private void jTativosAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTativosAncestorAdded
+
+    }//GEN-LAST:event_jTativosAncestorAdded
+
+    private void jTativosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTativosMouseClicked
+        if (this.jTativos.getSelectedRow() != -1) {
+            String nome = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 1).toString();
+            String telefone = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 2).toString();
+            String email = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 3).toString();
+            
+            this.jTFamigo_nome.setText(nome);
+            this.jTFamigo_telefone.setText(telefone);
+            this.jTFamigo_email.setText(email);
+        } 
+    }//GEN-LAST:event_jTativosMouseClicked
+
+    public void carregaTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) this.jTativos.getModel();
+        modelo.setNumRows(0);
+        ArrayList<Amigo> minhalista = objetoamigo.getMinhaLista();
+        for (Amigo a : minhalista) {
+            modelo.addRow(new Object[]{
+                a.getId(),
+                a.getNome(),
+                a.getTelefone(),
+                a.getEmail(),
+            });
+        }
+    }
     /**
      * @param args the command line arguments
      */

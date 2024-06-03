@@ -145,7 +145,7 @@ public class FRMMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMIcadastro_amigosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIcadastro_amigosActionPerformed
-        FRMAmigos objeto = new FRMAmigos();
+        FRMAmigo objeto = new FRMAmigo();
         objeto.setVisible(true);
     }//GEN-LAST:event_jMIcadastro_amigosActionPerformed
 
