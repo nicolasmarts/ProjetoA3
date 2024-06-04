@@ -107,10 +107,7 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
             String nome = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 1).toString();
             String telefone = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 2).toString();
             String email = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 3).toString();
-            
-            this.jTFamigo_nome.setText(nome);
-            this.jTFamigo_telefone.setText(telefone);
-            this.jTFamigo_email.setText(email);
+          
         } 
     }//GEN-LAST:event_jTativosMouseClicked
 

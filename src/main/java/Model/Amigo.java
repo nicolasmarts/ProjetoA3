@@ -11,19 +11,25 @@ public class Amigo {
     private AmigoDAO DAO;
     
     public Amigo(){
+        this.DAO = new AmigoDAO(); // Inicializando o DAO no construtor padrão
     }
     
     public Amigo(String nome, String telefone, String email){
-        this();
+        this(); // Chamando o construtor padrão para inicializar o DAO
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
     }
 
-    public Amigo(int id1, String nome, String telefone, String email) {
+    public Amigo(int id, String nome, String telefone, String email) {
+        this(); // Chamando o construtor padrão para inicializar o DAO
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
-        this.DAO = new AmigoDAO();
     }
+
+    // Métodos getters e setters
 
     public int getId() {
         return id;
@@ -57,31 +63,31 @@ public class Amigo {
         this.email = email;
     }
     
+    // Métodos relacionados ao banco de dados
+
     public ArrayList<Amigo> getMinhaLista() {
         return DAO.getMinhaLista();
     }
+
     public boolean insertAmigoBD(String nome, String telefone, String email){
         int id = this.maiorID() + 1;
         Amigo objeto = new Amigo(id, nome, telefone, email);
-        DAO.insertAmigoBD(objeto);
-        return true;
+        return DAO.insertAmigoBD(objeto);
     }
-    
+
     public boolean deleteAmigoBD(int id) {
-        DAO.deleteAmigoBD(id);
-        return true;
+        return DAO.deleteAmigoBD(id);
     }
-    
+
     public boolean updateAmigoBD(int id, String nome, String telefone, String email) {
         Amigo objeto = new Amigo(id, nome, telefone, email);
-        DAO.updateAmigoBD(objeto);
-        return true;
+        return DAO.updateAmigoBD(objeto);
     }
-    
+
     public Amigo carregaAmigo(int id) {
         return DAO.carregaAmigo(id);
     }
-    
+
     public int maiorID(){
         return DAO.maiorID();
     }
