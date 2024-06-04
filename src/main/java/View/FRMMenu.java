@@ -159,7 +159,7 @@ public class FRMMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jM_CadastroActionPerformed
 
     private void jMIcadastro_ferramentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIcadastro_ferramentasActionPerformed
-        FRMFerramentas objeto = new FRMFerramentas();
+        FRMFerramenta objeto = new FRMFerramenta();
         objeto.setVisible(true);
     }//GEN-LAST:event_jMIcadastro_ferramentasActionPerformed
 

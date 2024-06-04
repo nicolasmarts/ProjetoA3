@@ -67,9 +67,9 @@ public class AmigoDAO {
 
             String server = "localhost";
             String database = "emprestimo_ferramentas";
-            String url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC";
+            String url = "jdbc:mysql://localhost:8111/" + database + "?useTimezone=true&serverTimezone=UTC";
             String user = "root";
-            String password = "Unisul@1520";
+            String password = "";
 
             connection = DriverManager.getConnection(url, user, password);
             if (connection != null) {

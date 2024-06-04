@@ -4,17 +4,22 @@
  */
 package View;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import Model.Emprestimo;
+import javax.swing.JOptionPane;
 /**
  *
  * @author 1072324171
  */
 public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FRMRegistroEmprestimos
-     */
+    private Emprestimo objetoemprestimo;
+    
     public FRMRegistroEmprestimos() {
         initComponents();
+        this.objetoemprestimo = new Emprestimo();
     }
 
     /**
@@ -31,15 +36,15 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jTFregistroEmprestimo_nome = new javax.swing.JTextField();
+        jTFregistroEmprestimo_telefone = new javax.swing.JTextField();
         jBRegistroemprestimo_voltar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jBregistroEmprestimo_cadastrar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jTFregistroEmprestimo_dataretirada = new javax.swing.JTextField();
+        jTFregistroEmprestimo_prevEntrega = new javax.swing.JTextField();
+        jTFregistroEmprestimo_Ferramenta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,9 +59,9 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
         jLabel4.setText("Ferramenta:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTFregistroEmprestimo_nome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTFregistroEmprestimo_nomeActionPerformed(evt);
             }
         });
 
@@ -67,21 +72,26 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Cadastrar");
+        jBregistroEmprestimo_cadastrar.setText("Cadastrar");
+        jBregistroEmprestimo_cadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBregistroEmprestimo_cadastrarActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Data:");
 
         jLabel6.setText("Prev. Entrega:");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        jTFregistroEmprestimo_dataretirada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                jTFregistroEmprestimo_dataretiradaActionPerformed(evt);
             }
         });
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        jTFregistroEmprestimo_prevEntrega.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                jTFregistroEmprestimo_prevEntregaActionPerformed(evt);
             }
         });
 
@@ -103,8 +113,8 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(64, 64, 64)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)))))
+                                    .addComponent(jTFregistroEmprestimo_nome, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                                    .addComponent(jTFregistroEmprestimo_telefone)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -118,19 +128,20 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
                                     .addComponent(jLabel6)
                                     .addComponent(jBRegistroemprestimo_voltar))))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(40, 40, 40)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(0, 0, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBregistroEmprestimo_cadastrar))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(40, 40, 40)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTFregistroEmprestimo_prevEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTFregistroEmprestimo_dataretirada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jTFregistroEmprestimo_Ferramenta, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addGap(0, 44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -141,27 +152,27 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTFregistroEmprestimo_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTFregistroEmprestimo_telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTFregistroEmprestimo_Ferramenta, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTFregistroEmprestimo_dataretirada, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTFregistroEmprestimo_prevEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBRegistroemprestimo_voltar)
-                    .addComponent(jButton2))
+                    .addComponent(jBregistroEmprestimo_cadastrar))
                 .addContainerGap())
         );
 
@@ -185,21 +196,73 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTFregistroEmprestimo_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFregistroEmprestimo_nomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTFregistroEmprestimo_nomeActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void jTFregistroEmprestimo_dataretiradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFregistroEmprestimo_dataretiradaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_jTFregistroEmprestimo_dataretiradaActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void jTFregistroEmprestimo_prevEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFregistroEmprestimo_prevEntregaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_jTFregistroEmprestimo_prevEntregaActionPerformed
 
     private void jBRegistroemprestimo_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRegistroemprestimo_voltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBRegistroemprestimo_voltarActionPerformed
+
+    private void jBregistroEmprestimo_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBregistroEmprestimo_cadastrarActionPerformed
+        try {
+            String nome = this.jTFregistroEmprestimo_nome.getText();
+            String telefone = this.jTFregistroEmprestimo_telefone.getText();
+            String ferramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
+            String dataRetiradaStr = this.jTFregistroEmprestimo_dataretirada.getText();
+            String dataPrevistaDevolucaoStr = this.jTFregistroEmprestimo_prevEntrega.getText();
+            
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataRetirada = dateFormat.parse(dataRetiradaStr);
+            Date dataPrevistaDevolucao = dateFormat.parse(dataPrevistaDevolucaoStr);
+
+            
+            if (nome.length() < 2) {
+                throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
+            }
+        
+            if (telefone.isEmpty() || telefone.length() < 2) {
+                throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
+            }
+        
+            if (ferramenta.length() < 2) {
+                throw new Mensagens("Ferramenta deve conter ao menos 2 caracteres.");
+            }
+        
+            Date dataRetirada;
+            Date dataPrevistaDevolucao;
+            try {
+                dataRetirada = dateFormat.parse(dataRetiradaStr);
+                dataPrevistaDevolucao = dateFormat.parse(dataPrevistaDevolucaoStr);
+            } catch (ParseException e) {
+                throw new Mensagens("Datas devem estar no formato dd/MM/yyyy.");
+            }
+            
+            if (this.objetoemprestimo.insertEmprestimoBD(nome, telefone, ferramenta, dataRetirada, dataPrevistaDevolucao)) {
+                JOptionPane.showMessageDialog(null, "Empréstimo Cadastrado com Sucesso!");
+                this.jTFregistroEmprestimo_nome.setText("");
+                this.jTFregistroEmprestimo_telefone.setText("");
+                this.jTFregistroEmprestimo_Ferramenta.setText("");
+                this.jTFregistroEmprestimo_dataretirada.setText("");
+                this.jTFregistroEmprestimo_prevEntrega.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao cadastrar empréstimo.");
+            }
+            System.out.println(this.objetoemprestimo.getMinhaLista().toString());
+        } catch (Mensagens erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        } catch (ParseException erro2) {
+            JOptionPane.showMessageDialog(null, "Erro ao converter data: " + erro2.getMessage());
+        }
+    }//GEN-LAST:event_jBregistroEmprestimo_cadastrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,7 +301,7 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBRegistroemprestimo_voltar;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jBregistroEmprestimo_cadastrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -246,10 +309,10 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTFregistroEmprestimo_Ferramenta;
+    private javax.swing.JTextField jTFregistroEmprestimo_dataretirada;
+    private javax.swing.JTextField jTFregistroEmprestimo_nome;
+    private javax.swing.JTextField jTFregistroEmprestimo_prevEntrega;
+    private javax.swing.JTextField jTFregistroEmprestimo_telefone;
     // End of variables declaration//GEN-END:variables
 }

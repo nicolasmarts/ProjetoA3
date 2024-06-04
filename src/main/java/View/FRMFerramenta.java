@@ -4,17 +4,19 @@
  */
 package View;
 
+import Model.Ferramenta;
+import javax.swing.JOptionPane;
 /**
  *
  * @author 10723114087
  */
-public class FRMFerramentas extends javax.swing.JFrame {
-
-    /**
-     * Creates new form FRMFerramentas
-     */
-    public FRMFerramentas() {
+public class FRMFerramenta extends javax.swing.JFrame {
+    
+    private Ferramenta objetoferramenta;
+    
+    public FRMFerramenta() {
         initComponents();
+        this.objetoferramenta = new Ferramenta();
     }
 
     /**
@@ -65,6 +67,11 @@ public class FRMFerramentas extends javax.swing.JFrame {
         });
 
         jBferramenta_cadastrar.setText("Cadastrar");
+        jBferramenta_cadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBferramenta_cadastrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -148,6 +155,41 @@ public class FRMFerramentas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jBferramenta_voltarActionPerformed
 
+    private void jBferramenta_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBferramenta_cadastrarActionPerformed
+        try {
+            String nome = this.jTFferramenta_nome.getText();
+            String marca = this.jTFferramenta_marca.getText();
+            String custoStr = this.jTFferramenta_custo.getText();
+            
+            if (nome.length() < 2) {
+                throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
+            }
+            
+            if (marca.isEmpty() || marca.length() < 2) {
+                throw new Mensagens("Marca deve conter ao menos 2 caracteres.");
+            }
+            
+            double custo;
+            try {
+                custo = Double.parseDouble(custoStr);
+            } catch (NumberFormatException e) {
+                throw new Mensagens("Custo deve ser um número válido.");
+            }
+            
+            if (this.objetoferramenta.insertFerramentaBD(nome, marca, custo)) {
+                JOptionPane.showMessageDialog(null, "Ferramenta Cadastrada com Sucesso!");
+                this.jTFferramenta_nome.setText("");
+                this.jTFferramenta_marca.setText("");
+                this.jTFferramenta_custo.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao cadastrar ferramenta.");
+            }
+            System.out.println(this.objetoferramenta.getMinhaLista().toString());
+        } catch (Mensagens erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jBferramenta_cadastrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -165,20 +207,21 @@ public class FRMFerramentas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FRMFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMFerramenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FRMFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMFerramenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FRMFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMFerramenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FRMFerramenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FRMFerramentas().setVisible(true);
+                new FRMFerramenta().setVisible(true);
             }
         });
     }

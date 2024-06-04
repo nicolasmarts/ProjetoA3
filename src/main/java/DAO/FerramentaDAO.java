@@ -1,60 +1,162 @@
 package DAO;
 
 import Model.Ferramenta;
+
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FerramentaDAO {
-    private Connection connection;
+    
+    public ArrayList<Ferramenta> minhaLista = new ArrayList<>();
+    
+    public ArrayList<Ferramenta> getMinhaLista() {
+        minhaLista.clear();
 
-    public FerramentaDAO() throws SQLException {
-        this.connection = conexao.getConnection();
-    }
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT * FROM Ferramenta");
+            while (res.next()) {
 
-    public void adicionarFerramenta(Ferramenta ferramenta) throws SQLException {
-        String sql = "INSERT INTO Ferramenta (nome, marca) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, ferramenta.getNome());
-            statement.setString(2, ferramenta.getMarca());
-            statement.executeUpdate();
-        }
-    }
+                int id = res.getInt("idFerramenta");
+                String nome = res.getString("nome");
+                String marca = res.getString("marca");
+                double custo = res.getDouble("custo");
 
-    public List<Ferramenta> listarFerramentas() throws SQLException {
-        List<Ferramenta> ferramentas = new ArrayList<>();
-        String sql = "SELECT * FROM Ferramenta";
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                Ferramenta ferramenta = new Ferramenta();
-                ferramenta.setId(resultSet.getInt("id"));
-                ferramenta.setNome(resultSet.getString("nome"));
-                ferramenta.setMarca(resultSet.getString("marca"));
-                ferramentas.add(ferramenta);
+                Ferramenta objeto = new Ferramenta(id, nome, marca, custo);
+
+                minhaLista.add(objeto);
             }
+            stmt.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Erro:" + ex);
         }
-        return ferramentas;
+        return minhaLista;
     }
 
-    public void atualizarFerramenta(Ferramenta ferramenta) throws SQLException {
-        String sql = "UPDATE Ferramenta SET nome=?, marca=? WHERE id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, ferramenta.getNome());
-            statement.setString(2, ferramenta.getMarca());
-            statement.setInt(3, ferramenta.getId());
-            statement.executeUpdate();
+    public void setMinhaLista(ArrayList<Ferramenta> minhaLista) {
+        this.minhaLista = minhaLista;
+    }
+
+    public int maiorID() {
+        int maiorID = 0;
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT MAX(idFerramenta) id FROM Ferramenta");
+            res.next();
+            maiorID = res.getInt("id");
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Erro:" + ex);
+        }
+        return maiorID;
+    }
+
+    public Connection getConexao() throws SQLException {
+
+        Connection connection = null;
+
+        try {
+            String driver = "com.mysql.cj.jdbc.Driver";
+            Class.forName(driver);
+
+            String server = "localhost";
+            String database = "emprestimo_ferramentas";
+            String url = "jdbc:mysql://localhost:8111/" + database + "?useTimezone=true&serverTimezone=UTC";
+            String user = "root";
+            String password = "";
+
+            connection = DriverManager.getConnection(url, user, password);
+            if (connection != null) {
+                System.out.println("Status: Conectado!");
+            } else {
+                System.out.println("Status: NÃO CONECTADO!");
+            }
+
+            return connection;
+        } catch (ClassNotFoundException e) {
+            System.out.println("O driver nao foi encontrado.");
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Nao foi possivel conectar...");
+            return null;
         }
     }
 
-    public void removerFerramenta(int id) throws SQLException {
-        String sql = "DELETE FROM Ferramenta WHERE id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
+    public boolean insertFerramentaBD(Ferramenta objeto) {
+        String sql = "INSERT INTO Ferramenta(idFerramenta,nome,marca,custo) VALUES(?,?,?,?)";
+        try {
+            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+
+            stmt.setInt(1, objeto.getId());
+            stmt.setString(2, objeto.getNome());
+            stmt.setString(3, objeto.getMarca());
+            stmt.setDouble(4, objeto.getCusto());
+
+            stmt.execute();
+            stmt.close();
+
+            return true;
+        } catch (SQLException erro) {
+            System.out.println("Erro:" + erro);
+            throw new RuntimeException(erro);
         }
+    }
+
+    public boolean deleteFerramentaBD(int id) {
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            stmt.executeUpdate("DELETE FROM Ferramenta WHERE idFerramenta = " + id);
+            stmt.close();
+
+        } catch (SQLException erro) {
+            System.out.println("Erro:" + erro);
+        }
+        return true;
+    }
+
+    public boolean updateFerramentaBD(Ferramenta objeto) {
+        String sql = "UPDATE Ferramenta SET nome = ?, marca = ?, custo = ? WHERE idFerramenta = ?";
+        try {
+            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+
+            stmt.setString(1, objeto.getNome());
+            stmt.setString(2, objeto.getMarca());
+            stmt.setDouble(3, objeto.getCusto());
+            stmt.setInt(4, objeto.getId());
+
+            stmt.executeUpdate();
+            stmt.close();
+
+            return true;
+        } catch (SQLException erro) {
+            System.out.println("Erro:" + erro);
+            return false;
+        }
+    }
+
+    public Ferramenta carregaFerramenta(int id) {
+        Ferramenta objeto = new Ferramenta();
+        objeto.setId(id);
+        try {
+            Statement stmt = this.getConexao().createStatement();
+
+            ResultSet res = stmt.executeQuery("SELECT * FROM Ferramenta WHERE idFerramenta = " + id);
+            res.next();
+
+            objeto.setNome(res.getString("nome"));
+            objeto.setMarca(res.getString("marca"));
+            objeto.setCusto(res.getDouble("custo"));
+
+            stmt.close();
+        } catch (SQLException erro) {
+            System.out.println("Erro:" + erro);
+        }
+        return objeto;
     }
 }

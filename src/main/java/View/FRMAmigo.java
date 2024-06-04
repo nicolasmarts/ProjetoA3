@@ -162,35 +162,35 @@ public class FRMAmigo extends javax.swing.JFrame {
     }//GEN-LAST:event_jBamigo_voltarActionPerformed
 
     private void jBamigo_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBamigo_cadastrarActionPerformed
-try {
-        String nome = this.jTFamigo_nome.getText();
-        String telefone = this.jTFamigo_telefone.getText();
-        String email = this.jTFamigo_email.getText();
+        try {
+            String nome = this.jTFamigo_nome.getText();
+            String telefone = this.jTFamigo_telefone.getText();
+            String email = this.jTFamigo_email.getText();
         
-        if (nome.length() < 2) {
+            if (nome.length() < 2) {
             throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
-        }
+            }
         
-        if (telefone.isEmpty() || telefone.length() < 2) {
+            if (telefone.isEmpty() || telefone.length() < 2) {
             throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
-        }
+            }
         
-        if (email.length() < 2) {
+            if (email.length() < 2) {
             throw new Mensagens("E-mail deve conter ao menos 2 caracteres.");
-        }
+            }
         
-        if (this.objetoamigo.insertAmigoBD(nome, telefone, email)) {
-            JOptionPane.showMessageDialog(null, "Amigo Cadastrado com Sucesso!");
-            this.jTFamigo_nome.setText("");
-            this.jTFamigo_telefone.setText("");
-            this.jTFamigo_email.setText("");
-        } else {
+            if (this.objetoamigo.insertAmigoBD(nome, telefone, email)) {
+                JOptionPane.showMessageDialog(null, "Amigo Cadastrado com Sucesso!");
+                this.jTFamigo_nome.setText("");
+                this.jTFamigo_telefone.setText("");
+                this.jTFamigo_email.setText("");
+            } else {
             JOptionPane.showMessageDialog(null, "Falha ao cadastrar amigo.");
+            }
+            System.out.println(this.objetoamigo.getMinhaLista().toString());
+        } catch (Mensagens erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-        System.out.println(this.objetoamigo.getMinhaLista().toString());
-    } catch (Mensagens erro) {
-        JOptionPane.showMessageDialog(null, erro.getMessage());
-    }
     }//GEN-LAST:event_jBamigo_cadastrarActionPerformed
 
     /**
