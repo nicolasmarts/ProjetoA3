@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class FRMRelatorioAtivos extends javax.swing.JFrame {
+public class FRMRelatorioAmigos extends javax.swing.JFrame {
     
     private Amigo objetoamigo;
     
-    public FRMRelatorioAtivos() {
+    public FRMRelatorioAmigos() {
         initComponents();
         this.objetoamigo = new Amigo();
         this.carregaTabela();
     }
-
+    
+   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,23 +31,23 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
         jBrelatorioAtivos_voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Relatório de empréstimos ativos");
+        setTitle("Relatório de empréstimos amigos");
 
         jTativos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nome", "Ferramenta", "Status", "Data", "Prev. Entrega"
+                "Id", "Nome", "Telefone", "E-mail"
             }
         ));
         jTativos.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -120,7 +122,7 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
                 a.getId(),
                 a.getNome(),
                 a.getTelefone(),
-                a.getEmail(),
+                a.getEmail()
             });
         }
     }
@@ -129,10 +131,6 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -140,22 +138,13 @@ public class FRMRelatorioAtivos extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioAtivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioAtivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioAtivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioAtivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FRMRelatorioAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FRMRelatorioAtivos().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FRMRelatorioAmigos().setVisible(true);
         });
     }
 

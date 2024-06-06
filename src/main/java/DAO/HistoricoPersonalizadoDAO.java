@@ -11,8 +11,8 @@ import java.util.List;
 public class HistoricoPersonalizadoDAO {
     private Connection connection;
 
-    public HistoricoPersonalizadoDAO() throws SQLException {
-        this.connection = conexao.getConnection();
+    public HistoricoPersonalizadoDAO(Connection connection) {
+        this.connection = connection;
     }
 
     public void adicionarHistoricoPersonalizado(HistoricoPersonalizado historico) throws SQLException {
@@ -73,3 +73,4 @@ public class HistoricoPersonalizadoDAO {
         }
     }
 }
+

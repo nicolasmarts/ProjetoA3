@@ -1,22 +1,34 @@
+package View;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package View;
 
+import DAO.HistoricoPersonalizadoDAO;
+import Model.HistoricoPersonalizado;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author 1072324171
  */
 public class FRMHistorico extends javax.swing.JFrame {
-
+    private Connection connection;
     /**
      * Creates new form FRMTodosRelatórios
      */
     public FRMHistorico() {
+        this.connection = connection;
         initComponents();
+        carregaTabela();
     }
 
+    public FRMHistorico(Connection connection) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,50 +108,35 @@ public class FRMHistorico extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+     
     private void jBhistorico_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBhistorico_voltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBhistorico_voltarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FRMHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FRMHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FRMHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    public void carregaTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FRMHistorico().setVisible(true);
+        try {
+            HistoricoPersonalizadoDAO historicoDAO = new HistoricoPersonalizadoDAO(connection);
+            ArrayList<HistoricoPersonalizado> historicos = (ArrayList<HistoricoPersonalizado>) historicoDAO.listarHistoricoPersonalizado();
+
+            for (HistoricoPersonalizado h : historicos) {
+                Object[] rowData = {
+                    h.getIdHistorico(),
+                    h.getNomeAmigo(),
+                    h.getNomeFerramenta(),
+                    h.getMarcaFerramenta(),
+                    h.getIdEmprestimo(),
+                    h.getDataEmprestimo(),
+                    h.getDataEntregaPrevista(),
+                    h.getDataEntregaEfetiva()
+                };
+                modelo.addRow(rowData);
             }
-        });
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

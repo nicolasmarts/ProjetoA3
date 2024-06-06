@@ -4,17 +4,30 @@
  */
 package View;
 
+import DAO.HistoricoPersonalizadoDAO;
+import Model.HistoricoPersonalizado;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author 10723114087
  */
 public class FRMMenu extends javax.swing.JFrame {
 
+    private Connection connection;
     /**
      * Creates new form FRMMenu
      */
     public FRMMenu() {
         initComponents();
+    }
+    
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+        // Ao receber a conexão, você pode fazer o que quiser com ela, como usar para
+        // executar consultas ou outras operações no banco de dados
     }
 
     /**
@@ -33,7 +46,7 @@ public class FRMMenu extends javax.swing.JFrame {
         jMIcadastro_ferramentas = new javax.swing.JMenuItem();
         jM_Registros = new javax.swing.JMenu();
         jMIregistros_registrosemprestimos = new javax.swing.JMenuItem();
-        jM_Relatorios = new javax.swing.JMenu();
+        jM_Relatorio = new javax.swing.JMenu();
         jMIrelatorios_ativos = new javax.swing.JMenuItem();
         jMIrelatorios_ferramentas = new javax.swing.JMenuItem();
         jMIrelatorios_todosrelatorios = new javax.swing.JMenuItem();
@@ -70,9 +83,9 @@ public class FRMMenu extends javax.swing.JFrame {
 
         jMenuBar1.add(jM_Cadastro);
 
-        jM_Registros.setText("Registros");
+        jM_Registros.setText("Registro");
 
-        jMIregistros_registrosemprestimos.setText("Registros de empréstimos");
+        jMIregistros_registrosemprestimos.setText("Empréstimo");
         jMIregistros_registrosemprestimos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMIregistros_registrosemprestimosActionPerformed(evt);
@@ -82,15 +95,15 @@ public class FRMMenu extends javax.swing.JFrame {
 
         jMenuBar1.add(jM_Registros);
 
-        jM_Relatorios.setText("Relatórios");
+        jM_Relatorio.setText("Relatório");
 
-        jMIrelatorios_ativos.setText("Ativos");
+        jMIrelatorios_ativos.setText("Amigos");
         jMIrelatorios_ativos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMIrelatorios_ativosActionPerformed(evt);
             }
         });
-        jM_Relatorios.add(jMIrelatorios_ativos);
+        jM_Relatorio.add(jMIrelatorios_ativos);
 
         jMIrelatorios_ferramentas.setText("Ferramentas");
         jMIrelatorios_ferramentas.addActionListener(new java.awt.event.ActionListener() {
@@ -98,7 +111,7 @@ public class FRMMenu extends javax.swing.JFrame {
                 jMIrelatorios_ferramentasActionPerformed(evt);
             }
         });
-        jM_Relatorios.add(jMIrelatorios_ferramentas);
+        jM_Relatorio.add(jMIrelatorios_ferramentas);
 
         jMIrelatorios_todosrelatorios.setText("Todos os relatórios");
         jMIrelatorios_todosrelatorios.addActionListener(new java.awt.event.ActionListener() {
@@ -106,9 +119,9 @@ public class FRMMenu extends javax.swing.JFrame {
                 jMIrelatorios_todosrelatoriosActionPerformed(evt);
             }
         });
-        jM_Relatorios.add(jMIrelatorios_todosrelatorios);
+        jM_Relatorio.add(jMIrelatorios_todosrelatorios);
 
-        jMenuBar1.add(jM_Relatorios);
+        jMenuBar1.add(jM_Relatorio);
 
         jM_Sair.setText("Sair");
 
@@ -164,7 +177,7 @@ public class FRMMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMIcadastro_ferramentasActionPerformed
 
     private void jMIrelatorios_ativosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIrelatorios_ativosActionPerformed
-        FRMRelatorioAtivos objeto = new FRMRelatorioAtivos();
+        FRMRelatorioAmigos objeto = new FRMRelatorioAmigos();
         objeto.setVisible(true);
     }//GEN-LAST:event_jMIrelatorios_ativosActionPerformed
 
@@ -228,7 +241,7 @@ public class FRMMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMIsair_sairaplicativo;
     private javax.swing.JMenu jM_Cadastro;
     private javax.swing.JMenu jM_Registros;
-    private javax.swing.JMenu jM_Relatorios;
+    private javax.swing.JMenu jM_Relatorio;
     private javax.swing.JMenu jM_Sair;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables

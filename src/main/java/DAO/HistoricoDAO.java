@@ -23,7 +23,7 @@ public class HistoricoDAO {
             if (historico.getDataDevolucao() != null) {
                 statement.setDate(2, new Date(historico.getDataDevolucao().getTime()));
             } else {
-                statement.setDate(2, null);
+                statement.setNull(2, java.sql.Types.DATE);
             }
             statement.executeUpdate();
         }
@@ -52,7 +52,7 @@ public class HistoricoDAO {
             if (historico.getDataDevolucao() != null) {
                 statement.setDate(2, new Date(historico.getDataDevolucao().getTime()));
             } else {
-                statement.setDate(2, null);
+                statement.setNull(2, java.sql.Types.DATE);
             }
             statement.setInt(3, historico.getId());
             statement.executeUpdate();

@@ -32,12 +32,12 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jM_Registros">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Registros"/>
+            <Property name="text" type="java.lang.String" value="Registro"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMIregistros_registrosemprestimos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registros de empr&#xe9;stimos"/>
+                <Property name="text" type="java.lang.String" value="Empr&#xe9;stimo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMIregistros_registrosemprestimosActionPerformed"/>
@@ -45,14 +45,14 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jM_Relatorios">
+        <Menu class="javax.swing.JMenu" name="jM_Relatorio">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Relat&#xf3;rios"/>
+            <Property name="text" type="java.lang.String" value="Relat&#xf3;rio"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMIrelatorios_ativos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ativos"/>
+                <Property name="text" type="java.lang.String" value="Amigos"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMIrelatorios_ativosActionPerformed"/>

@@ -4,6 +4,10 @@
  */
 package View;
 
+import Model.Ferramenta;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 1072324171
@@ -15,6 +19,7 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
      */
     public FRMRelatorioFerramentas() {
         initComponents();
+        carregaTabela();
     }
 
     /**
@@ -34,19 +39,19 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, "", null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, "", null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, "", null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, "", null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Ferramenta", "Descrição", "Custo"
+                "Id", "Ferramenta", "Marca", "Custo"
             }
         ));
         jTable2.setToolTipText("");
@@ -84,39 +89,29 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
     private void jBRelatorioFerramentas_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRelatorioFerramentas_voltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBRelatorioFerramentas_voltarActionPerformed
-
+    
+    public void carregaTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        modelo.setNumRows(0);
+        Ferramenta ferramenta = new Ferramenta();
+        ArrayList<Ferramenta> ferramentas = ferramenta.getMinhaLista();
+        for (Ferramenta f : ferramentas) {
+            modelo.addRow(new Object[]{
+                f.getId(),
+                f.getNome(),
+                f.getMarca(),
+                f.getCusto()
+            });
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMRelatorioFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FRMRelatorioFerramentas().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FRMRelatorioFerramentas().setVisible(true);
         });
     }
 

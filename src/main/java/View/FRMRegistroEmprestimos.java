@@ -4,6 +4,7 @@
  */
 package View;
 
+import DAO.EmprestimoDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,7 +80,7 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Data:");
+        jLabel5.setText("Data retirada:");
 
         jLabel6.setText("Prev. Entrega:");
 
@@ -102,47 +103,39 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(156, 156, 156)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(64, 64, 64)
+                                .addGap(31, 31, 31)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTFregistroEmprestimo_nome, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                                     .addComponent(jTFregistroEmprestimo_telefone)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(75, 75, 75)
+                                .addComponent(jBRegistroemprestimo_voltar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel6)
-                                    .addComponent(jBRegistroemprestimo_voltar))))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(8, 8, 8)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jBregistroEmprestimo_cadastrar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTFregistroEmprestimo_prevEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTFregistroEmprestimo_dataretirada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jTFregistroEmprestimo_Ferramenta, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addGap(0, 44, Short.MAX_VALUE))
+                                .addComponent(jBregistroEmprestimo_cadastrar)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTFregistroEmprestimo_dataretirada, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTFregistroEmprestimo_prevEntrega)
+                                    .addComponent(jTFregistroEmprestimo_Ferramenta, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))))))
+                .addGap(44, 44, 44))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,54 +207,56 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
     private void jBregistroEmprestimo_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBregistroEmprestimo_cadastrarActionPerformed
         try {
-            String nome = this.jTFregistroEmprestimo_nome.getText();
-            String telefone = this.jTFregistroEmprestimo_telefone.getText();
-            String ferramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
-            String dataRetiradaStr = this.jTFregistroEmprestimo_dataretirada.getText();
-            String dataPrevistaDevolucaoStr = this.jTFregistroEmprestimo_prevEntrega.getText();
-            
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date dataRetirada = dateFormat.parse(dataRetiradaStr);
-            Date dataPrevistaDevolucao = dateFormat.parse(dataPrevistaDevolucaoStr);
+        // Coletar os dados do formulário
+        String nome = this.jTFregistroEmprestimo_nome.getText();
+        String telefone = this.jTFregistroEmprestimo_telefone.getText();
+        String ferramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
+        
+        // Formatar as datas
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dataRetirada = dateFormat.parse(this.jTFregistroEmprestimo_dataretirada.getText());
+        Date dataPrevistaDevolucao = dateFormat.parse(this.jTFregistroEmprestimo_prevEntrega.getText());
 
-            
-            if (nome.length() < 2) {
-                throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
-            }
-        
-            if (telefone.isEmpty() || telefone.length() < 2) {
-                throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
-            }
-        
-            if (ferramenta.length() < 2) {
-                throw new Mensagens("Ferramenta deve conter ao menos 2 caracteres.");
-            }
-        
-            Date dataRetirada;
-            Date dataPrevistaDevolucao;
-            try {
-                dataRetirada = dateFormat.parse(dataRetiradaStr);
-                dataPrevistaDevolucao = dateFormat.parse(dataPrevistaDevolucaoStr);
-            } catch (ParseException e) {
-                throw new Mensagens("Datas devem estar no formato dd/MM/yyyy.");
-            }
-            
-            if (this.objetoemprestimo.insertEmprestimoBD(nome, telefone, ferramenta, dataRetirada, dataPrevistaDevolucao)) {
-                JOptionPane.showMessageDialog(null, "Empréstimo Cadastrado com Sucesso!");
-                this.jTFregistroEmprestimo_nome.setText("");
-                this.jTFregistroEmprestimo_telefone.setText("");
-                this.jTFregistroEmprestimo_Ferramenta.setText("");
-                this.jTFregistroEmprestimo_dataretirada.setText("");
-                this.jTFregistroEmprestimo_prevEntrega.setText("");
-            } else {
-                JOptionPane.showMessageDialog(null, "Falha ao cadastrar empréstimo.");
-            }
-            System.out.println(this.objetoemprestimo.getMinhaLista().toString());
-        } catch (Mensagens erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
-        } catch (ParseException erro2) {
-            JOptionPane.showMessageDialog(null, "Erro ao converter data: " + erro2.getMessage());
+        // Validações de campo
+        if (nome.length() < 2) {
+            throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
         }
+
+        if (telefone.isEmpty() || telefone.length() < 2) {
+            throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
+        }
+
+        if (ferramenta.length() < 2) {
+            throw new Mensagens("Ferramenta deve conter ao menos 2 caracteres.");
+        }
+
+        // Criar um novo objeto de empréstimo
+        Emprestimo novoEmprestimo = new Emprestimo();
+        novoEmprestimo.setNome(nome);
+        novoEmprestimo.setTelefone(telefone);
+        novoEmprestimo.setFerramenta(ferramenta);
+        novoEmprestimo.setDataRetirada(dataRetirada);
+        novoEmprestimo.setDataPrevistaDevolucao(dataPrevistaDevolucao);
+
+        // Inserir no banco de dados
+        EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+        if (emprestimoDAO.insertEmprestimoBD(novoEmprestimo)) {
+            JOptionPane.showMessageDialog(null, "Empréstimo Cadastrado com Sucesso!");
+            this.jTFregistroEmprestimo_nome.setText("");
+            this.jTFregistroEmprestimo_telefone.setText("");
+            this.jTFregistroEmprestimo_Ferramenta.setText("");
+            this.jTFregistroEmprestimo_dataretirada.setText("");
+            this.jTFregistroEmprestimo_prevEntrega.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha ao cadastrar empréstimo.");
+        }
+    } catch (Mensagens erro) {
+        JOptionPane.showMessageDialog(null, erro.getMessage());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "ID do amigo ou da ferramenta deve ser um número inteiro.");
+    } catch (ParseException e) {
+        JOptionPane.showMessageDialog(null, "Data no formato inválido. Use o formato yyyy-MM-dd.");
+    }
     }//GEN-LAST:event_jBregistroEmprestimo_cadastrarActionPerformed
 
     /**
