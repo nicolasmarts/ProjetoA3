@@ -12,6 +12,16 @@ import java.util.ArrayList;
 
 public class FerramentaDAO {
     
+    public int obterIdFerramenta(String nomeFerramenta) {
+    // Lógica para consultar o banco de dados e retornar o ID correspondente
+    int idFerramenta = -1; // Valor padrão caso a ferramenta não seja encontrada
+    // Implemente a lógica para consultar o banco de dados e obter o ID da ferramenta com o nome especificado
+    // Suponha que você já tenha obtido o ID da ferramenta de alguma forma
+    // Substitua a atribuição abaixo pelo código real para obter o ID da ferramenta
+    // Exemplo fictício: idFerramenta = ferramentaDAO.obterIdFerramenta(nomeFerramenta);
+    return idFerramenta;
+}
+    
     public ArrayList<Ferramenta> minhaLista = new ArrayList<>();
     
     public ArrayList<Ferramenta> getMinhaLista() {
@@ -158,5 +168,36 @@ public class FerramentaDAO {
             System.out.println("Erro:" + erro);
         }
         return objeto;
+    }
+
+    public int obterIdPorNome(String nomeFerramenta) {
+        // SQL para selecionar o ID da ferramenta com base no nome
+        String sql = "SELECT idFerramenta FROM Ferramenta WHERE nome = ?";
+        
+        try (
+            // Obtendo a conexão com o banco de dados
+            Connection conexao = getConexao();
+            // Preparando a declaração SQL
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+        ) {
+            // Definindo o parâmetro nome da ferramenta na declaração preparada
+            stmt.setString(1, nomeFerramenta);
+            
+            // Executando a consulta e armazenando o resultado
+            ResultSet rs = stmt.executeQuery();
+            
+            // Verificando se a consulta retornou algum resultado
+            if (rs.next()) {
+                // Se sim, retorna o ID da ferramenta encontrado
+                return rs.getInt("idFerramenta");
+            } else {
+                // Se não, lança uma exceção ou retorna um valor padrão, dependendo da sua lógica
+                throw new RuntimeException("Ferramenta não encontrada com o nome fornecido: " + nomeFerramenta);
+            }
+        } catch (SQLException erro) {
+            // Em caso de erro, imprime o erro e lança uma exceção
+            System.out.println("Erro ao buscar ID da ferramenta: " + erro);
+            throw new RuntimeException(erro);
+        }
     }
 }

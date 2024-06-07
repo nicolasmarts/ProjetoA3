@@ -1,34 +1,23 @@
 package View;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-import DAO.HistoricoPersonalizadoDAO;
-import Model.HistoricoPersonalizado;
-import java.sql.Connection;
-import java.sql.SQLException;
+import Model.Emprestimo;
 import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author 1072324171
- */
-public class FRMHistorico extends javax.swing.JFrame {
-    private Connection connection;
-    /**
-     * Creates new form FRMTodosRelatórios
-     */
-    public FRMHistorico() {
-        this.connection = connection;
-        initComponents();
-        carregaTabela();
-    }
 
-    public FRMHistorico(Connection connection) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+public class FRMHistorico extends javax.swing.JFrame {
+    
+    private Emprestimo objetoemprestimo;
+    
+    public FRMHistorico() {
+        initComponents();
+        this.objetoemprestimo = new Emprestimo();
+        this.carregaTabela();
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,7 +28,7 @@ public class FRMHistorico extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jThistorico = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jBhistorico_voltar = new javax.swing.JButton();
@@ -47,25 +36,30 @@ public class FRMHistorico extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Todos os relatórios");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jThistorico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, "", null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, "", null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, "", null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, "", null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nome", "Ferramenta", "Situação", "Data", "Prev. entrega"
+                "Id", "Nome", "Telefone", "Ferramenta", "Data retirada", "Prev. entrega"
             }
         ));
-        jTable1.setToolTipText("");
-        jScrollPane1.setViewportView(jTable1);
+        jThistorico.setToolTipText("");
+        jThistorico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jThistoricoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jThistorico);
 
         jLabel1.setText("Amigo que faz mais empréstimos:");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -113,37 +107,69 @@ public class FRMHistorico extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jBhistorico_voltarActionPerformed
 
-    public void carregaTabela() {
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0);
+    private void jThistoricoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jThistoricoMouseClicked
+        if (this.jThistorico.getSelectedRow() != -1) {
+            String nome = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 0).toString();
+            String telefone = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 1).toString();
+            String ferramenta = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 2).toString();
+        
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
+            String dataRetiradaString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 3).toString();
+            String dataPrevistaDevolucaoString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 4).toString();
 
         try {
-            HistoricoPersonalizadoDAO historicoDAO = new HistoricoPersonalizadoDAO(connection);
-            ArrayList<HistoricoPersonalizado> historicos = (ArrayList<HistoricoPersonalizado>) historicoDAO.listarHistoricoPersonalizado();
-
-            for (HistoricoPersonalizado h : historicos) {
-                Object[] rowData = {
-                    h.getIdHistorico(),
-                    h.getNomeAmigo(),
-                    h.getNomeFerramenta(),
-                    h.getMarcaFerramenta(),
-                    h.getIdEmprestimo(),
-                    h.getDataEmprestimo(),
-                    h.getDataEntregaPrevista(),
-                    h.getDataEntregaEfetiva()
-                };
-                modelo.addRow(rowData);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            Date dataRetirada = sdf.parse(dataRetiradaString);
+            Date dataPrevistaDevolucao = sdf.parse(dataPrevistaDevolucaoString);
+            // Agora você pode usar dataRetirada e dataPrevistaDevolucao conforme necessário
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        }
+    }//GEN-LAST:event_jThistoricoMouseClicked
+
+    public void carregaTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();
+        modelo.setNumRows(0);
+        ArrayList<Emprestimo> minhalista = objetoemprestimo.getMinhaLista();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        for (Emprestimo a : minhalista) {
+            modelo.addRow(new Object[]{
+                a.getNomeAmigo(),
+                a.getTelefone(),
+                a.getNomeFerramenta(),
+                sdf.format(a.getDataRetirada()),
+                sdf.format(a.getDataPrevistaDevolucao())
+            });
+        }
+    }
+   
+   public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FRMHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new FRMRelatorioAmigos().setVisible(true);
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBhistorico_voltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable jThistorico;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,93 +1,65 @@
 package Model;
 
 import DAO.EmprestimoDAO;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Emprestimo {
     private int id;
     private Date dataPrevistaDevolucao;
     private Date dataRetirada;
+    private String nomeAmigo;
+    private String telefone;
+    private String nomeFerramenta;
+    private EmprestimoDAO DAO;
     private int idAmigo;
     private int idFerramenta;
-    private String nome; // Adicionado
-    private String telefone; // Adicionado
-    private String ferramenta; // Adicionado
-    private EmprestimoDAO DAO;
-    
-    public Emprestimo() {
-        this.DAO = new EmprestimoDAO();
+
+    public Emprestimo(){
+        this.DAO = new EmprestimoDAO(); 
     }
-    
-    public Emprestimo(int id, Date dataPrevistaDevolucao, Date dataRetirada, int idAmigo, int idFerramenta, String nome, String telefone, String ferramenta) {
+
+    public Emprestimo(int id, Date dataPrevistaDevolucao, Date dataRetirada, String nomeAmigo, String telefone, String nomeFerramenta) {
+        this();
         this.id = id;
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
         this.dataRetirada = dataRetirada;
-        this.idAmigo = idAmigo;
-        this.idFerramenta = idFerramenta;
-        this.nome = nome;
+        this.nomeAmigo = nomeAmigo;
         this.telefone = telefone;
-        this.ferramenta = ferramenta;
-        this.DAO = new EmprestimoDAO();
+        this.nomeFerramenta = nomeFerramenta;
     }
-    
-    public Emprestimo(Date dataPrevistaDevolucao, Date dataRetirada, int idAmigo, int idFerramenta, String nome, String telefone, String ferramenta) {
-        this.dataPrevistaDevolucao = dataPrevistaDevolucao;
-        this.dataRetirada = dataRetirada;
-        this.idAmigo = idAmigo;
-        this.idFerramenta = idFerramenta;
-        this.nome = nome;
-        this.telefone = telefone;
-        this.ferramenta = ferramenta;
-        this.DAO = new EmprestimoDAO();
-    }
-    
+
+    // Getters and setters
     public int getId() {
         return id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public Date getDataPrevistaDevolucao() {
         return dataPrevistaDevolucao;
     }
-    
+
     public void setDataPrevistaDevolucao(Date dataPrevistaDevolucao) {
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
     }
-    
+
     public Date getDataRetirada() {
         return dataRetirada;
     }
-    
+
     public void setDataRetirada(Date dataRetirada) {
         this.dataRetirada = dataRetirada;
     }
-    
-    public int getIdAmigo() {
-        return idAmigo;
-    }
-    
-    public void setIdAmigo(int idAmigo) {
-        this.idAmigo = idAmigo;
-    }
-    
-    public int getIdFerramenta() {
-        return idFerramenta;
-    }
-    
-    public void setIdFerramenta(int idFerramenta) {
-        this.idFerramenta = idFerramenta;
-    }
-    
-    public String getNome() {
-        return nome;
+
+    public String getNomeAmigo() {
+        return nomeAmigo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeAmigo(String nomeAmigo) {
+        this.nomeAmigo = nomeAmigo;
     }
 
     public String getTelefone() {
@@ -98,30 +70,46 @@ public class Emprestimo {
         this.telefone = telefone;
     }
 
-    public String getFerramenta() {
-        return ferramenta;
+    public String getNomeFerramenta() {
+        return nomeFerramenta;
     }
 
-    public void setFerramenta(String ferramenta) {
-        this.ferramenta = ferramenta;
+    public void setNomeFerramenta(String nomeFerramenta) {
+        this.nomeFerramenta = nomeFerramenta;
+    }
+
+    public int getIdAmigo() {
+        return idAmigo;
+    }
+
+    public void setIdAmigo(int idAmigo) {
+        this.idAmigo = idAmigo;
+    }
+
+    public int getIdFerramenta() {
+        return idFerramenta;
+    }
+
+    public void setIdFerramenta(int idFerramenta) {
+        this.idFerramenta = idFerramenta;
     }
 
     public ArrayList<Emprestimo> getMinhaLista() {
         return DAO.getMinhaLista();
     }
 
-    public boolean insertEmprestimoBD(Date dataPrevistaDevolucao, Date dataRetirada, int idAmigo, int idFerramenta, String nome, String telefone, String ferramenta) {
+    public boolean insertEmprestimoBD(String nomeAmigo, String telefone, String nomeFerramenta, Date dataRetirada, Date dataPrevistaDevolucao){
         int id = this.maiorID() + 1;
-        Emprestimo objeto = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, idAmigo, idFerramenta, nome, telefone, ferramenta);
-        return DAO.insertEmprestimoBD(objeto);
+        Emprestimo objeto = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, telefone, nomeFerramenta);
+        return DAO.insertEmprestimoBD(objeto, nomeAmigo, nomeFerramenta); // Chama a versão correta do método
     }
 
     public boolean deleteEmprestimoBD(int id) {
         return DAO.deleteEmprestimoBD(id);
     }
 
-    public boolean updateEmprestimoBD(int id, Date dataPrevistaDevolucao, Date dataRetirada, int idAmigo, int idFerramenta, String nome, String telefone, String ferramenta) {
-        Emprestimo objeto = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, idAmigo, idFerramenta, nome, telefone, ferramenta);
+    public boolean updateEmprestimoBD(int id, String nomeAmigo, String telefone, String nomeFerramenta, Date dataRetirada, Date dataPrevistaDevolucao) {
+        Emprestimo objeto = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, telefone, nomeFerramenta);
         return DAO.updateEmprestimoBD(objeto);
     }
 

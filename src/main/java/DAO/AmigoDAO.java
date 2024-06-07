@@ -11,6 +11,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class AmigoDAO {
+    
+    public int obterIdAmigo(String nomeAmigo) {
+    // Lógica para consultar o banco de dados e retornar o ID correspondente
+    int idAmigo = -1; // Valor padrão caso o amigo não seja encontrado
+    // Implemente a lógica para consultar o banco de dados e obter o ID do amigo com o nome especificado
+    // Suponha que você já tenha obtido o ID do amigo de alguma forma
+    // Substitua a atribuição abaixo pelo código real para obter o ID do amigo
+    // Exemplo fictício: idAmigo = amigoDAO.obterIdAmigo(nomeAmigo);
+    return idAmigo;
+}
 
     public ArrayList<Amigo> minhaLista = new ArrayList<>();
 
@@ -159,4 +169,26 @@ public class AmigoDAO {
         }
         return objeto;
     }
+
+    public int obterIdPorNome(String nome) {
+    String sql = "SELECT idAmigo FROM Amigo WHERE nome = ?";
+    int id = -1; // Valor padrão se o nome não for encontrado
+
+    try {
+        PreparedStatement stmt = getConexao().prepareStatement(sql);
+        stmt.setString(1, nome);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            id = rs.getInt("idAmigo");
+        }
+
+        rs.close();
+        stmt.close();
+    } catch (SQLException e) {
+        System.out.println("Erro ao obter o ID do amigo: " + e.getMessage());
+    }
+
+    return id;
+}
 }

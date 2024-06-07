@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Emprestimo;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,141 +9,163 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EmprestimoDAO {
 
     public ArrayList<Emprestimo> minhaLista = new ArrayList<>();
-    
-    public ArrayList<Emprestimo> getMinhaLista() {
-        minhaLista.clear();
-        
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT * FROM Emprestimo");
+
+    public ArrayList<Emprestimo> getListaEmprestimos() {
+        ArrayList<Emprestimo> emprestimos = new ArrayList<>();
+
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet res = stmt.executeQuery("SELECT e.idEmprestimo, e.dataPrevistaDevolucao, e.dataRetirada, " +
+                     "a.nome AS nomeAmigo, f.nome AS nomeFerramenta, e.idAmigo, e.idFerramenta " +
+                     "FROM Emprestimo e " +
+                     "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
+                     "JOIN Ferramenta f ON e.idFerramenta = f.idFerramenta")) {
             while (res.next()) {
                 int id = res.getInt("idEmprestimo");
-                java.sql.Date dataPrevistaDevolucao = res.getDate("dataPrevistaDevolucao");
-                java.sql.Date dataRetirada = res.getDate("dataRetirada");
+                Date dataPrevistaDevolucao = res.getDate("dataPrevistaDevolucao");
+                Date dataRetirada = res.getDate("dataRetirada");
+                String nomeAmigo = res.getString("nomeAmigo");
+                String nomeFerramenta = res.getString("nomeFerramenta");
                 int idAmigo = res.getInt("idAmigo");
                 int idFerramenta = res.getInt("idFerramenta");
-                String nome = res.getString("nome"); // Adicionado
-                String telefone = res.getString("telefone"); // Adicionado
-                String ferramenta = res.getString("ferramenta"); // Adicionado
 
-                Emprestimo objeto = new Emprestimo(id, new java.util.Date(dataPrevistaDevolucao.getTime()), new java.util.Date(dataRetirada.getTime()), idAmigo, idFerramenta, nome, telefone, ferramenta);
-                minhaLista.add(objeto);
+                // Criando o objeto de empréstimo
+                Emprestimo emprestimo = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, null, nomeFerramenta);
+                emprestimo.setIdAmigo(idAmigo); // Definindo o id do amigo
+                emprestimo.setIdFerramenta(idFerramenta); // Definindo o id da ferramenta
+                emprestimos.add(emprestimo);
             }
+        } catch (SQLException ex) {
+            System.out.println("Erro:" + ex);
+        }
+        return emprestimos;
+    }
+
+    public void setMinhaLista(ArrayList<Emprestimo> minhaLista) {
+        this.minhaLista = minhaLista;
+    }
+
+    public int maiorID() {
+        int maiorID = 0;
+        try {
+            Statement stmt = getConexao().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT MAX(idEmprestimo) id FROM Emprestimo");
+            res.next();
+            maiorID = res.getInt("id");
             stmt.close();
         } catch (SQLException ex) {
             System.out.println("Erro:" + ex);
         }
-        return minhaLista;
+        return maiorID;
     }
-    
-    public Connection getConexao() throws SQLException {
-        Connection connection = null;
-        
-        try {
-            String driver = "com.mysql.cj.jdbc.Driver";
-            Class.forName(driver);
-            
-            String server = "localhost";
-            String database = "emprestimo_ferramentas";
-            String url = "jdbc:mysql://" + server + ":8111/" + database + "?useTimezone=true&serverTimezone=UTC";
-            String user = "root";
-            String password = "";
-            
-            connection = DriverManager.getConnection(url, user, password);
-            if (connection != null) {
-                System.out.println("Status: Conectado!");
-            } else {
-                System.out.println("Status: NÃO CONECTADO!");
-            }
-            return connection;
-        } catch (ClassNotFoundException e) {
-            System.out.println("O driver não foi encontrado.");
-            return null;
-        } catch (SQLException e) {
-            System.out.println("Não foi possível conectar...");
-            return null;
-        }
-    }
-    
-    public boolean insertEmprestimoBD(Emprestimo objeto) {
-        String sql = "INSERT INTO Emprestimo(idEmprestimo, dataPrevistaDevolucao, dataRetirada, idAmigo, idFerramenta, nome, telefone, ferramenta) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
 
-            stmt.setInt(1, objeto.getId());
-            stmt.setDate(2, new java.sql.Date(objeto.getDataPrevistaDevolucao().getTime()));
-            stmt.setDate(3, new java.sql.Date(objeto.getDataRetirada().getTime()));
-            stmt.setInt(4, objeto.getIdAmigo());
-            stmt.setInt(5, objeto.getIdFerramenta());
-            stmt.setString(6, objeto.getNome()); // Adicionado
-            stmt.setString(7, objeto.getTelefone()); // Adicionado
-            stmt.setString(8, objeto.getFerramenta()); // Adicionado
+    public boolean insertEmprestimoBD(Emprestimo objeto, String nomeAmigo, String nomeFerramenta) {
+        String sql = "INSERT INTO Emprestimo(dataPrevistaDevolucao, dataRetirada, idAmigo, idFerramenta) VALUES(?, ?, ?, ?)";
+        try {
+            int idAmigo = getIdAmigoPorNome(nomeAmigo);
+            int idFerramenta = getIdFerramentaPorNome(nomeFerramenta);
+
+            PreparedStatement stmt = getConexao().prepareStatement(sql);
+            stmt.setDate(1, new java.sql.Date(objeto.getDataPrevistaDevolucao().getTime()));
+            stmt.setDate(2, new java.sql.Date(objeto.getDataRetirada().getTime()));
+            stmt.setInt(3, idAmigo);
+            stmt.setInt(4, idFerramenta);
 
             stmt.execute();
             stmt.close();
-            
+
             return true;
         } catch (SQLException erro) {
             System.out.println("Erro:" + erro);
             throw new RuntimeException(erro);
         }
     }
-    
+
+    public int getIdAmigoPorNome(String nomeAmigo) {
+        String sql = "SELECT idAmigo FROM Amigo WHERE nome = ?";
+        try {
+            PreparedStatement stmt = getConexao().prepareStatement(sql);
+            stmt.setString(1, nomeAmigo);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("idAmigo");
+            } else {
+                throw new RuntimeException("Amigo não encontrado com o nome fornecido: " + nomeAmigo);
+            }
+        } catch (SQLException erro) {
+            System.out.println("Erro ao buscar ID do amigo: " + erro);
+            throw new RuntimeException(erro);
+        }
+    }
+
+    public int getIdFerramentaPorNome(String nomeFerramenta) {
+        String sql = "SELECT idFerramenta FROM Ferramenta WHERE nome = ?";
+        try {
+            PreparedStatement stmt = getConexao().prepareStatement(sql);
+            stmt.setString(1, nomeFerramenta);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("idFerramenta");
+            } else {
+                throw new RuntimeException("Ferramenta não encontrada com o nome fornecido: " + nomeFerramenta);
+            }
+        } catch (SQLException erro) {
+            System.out.println("Erro ao buscar ID da ferramenta: " + erro);
+            throw new RuntimeException(erro);
+        }
+    }
+
     public boolean deleteEmprestimoBD(int id) {
         try {
-            Statement stmt = this.getConexao().createStatement();
+            Statement stmt = getConexao().createStatement();
             stmt.executeUpdate("DELETE FROM Emprestimo WHERE idEmprestimo = " + id);
             stmt.close();
         } catch (SQLException erro) {
             System.out.println("Erro:" + erro);
-            return false;
         }
         return true;
     }
-    
+
     public boolean updateEmprestimoBD(Emprestimo objeto) {
-        String sql = "UPDATE Emprestimo SET dataPrevistaDevolucao = ?, dataRetirada = ?, idAmigo = ?, idFerramenta = ?, nome = ?, telefone = ?, ferramenta = ? WHERE idEmprestimo = ?";
+        String sql = "UPDATE Emprestimo SET dataPrevistaDevolucao = ?, dataRetirada = ?, nomeAmigo = ?, telefone = ?, nomeFerramenta = ? WHERE idEmprestimo = ?";
         try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+            PreparedStatement stmt = getConexao().prepareStatement(sql);
 
             stmt.setDate(1, new java.sql.Date(objeto.getDataPrevistaDevolucao().getTime()));
             stmt.setDate(2, new java.sql.Date(objeto.getDataRetirada().getTime()));
-            stmt.setInt(3, objeto.getIdAmigo());
-            stmt.setInt(4, objeto.getIdFerramenta());
-            stmt.setString(5, objeto.getNome());
-            stmt.setString(6, objeto.getTelefone());
-            stmt.setString(7, objeto.getFerramenta());
-            stmt.setInt(8, objeto.getId());
+            stmt.setString(3, objeto.getNomeAmigo());
+            stmt.setString(4, objeto.getTelefone());
+            stmt.setString(5, objeto.getNomeFerramenta());
+            stmt.setInt(6, objeto.getId());
 
-            stmt.execute();
+            stmt.executeUpdate();
             stmt.close();
 
             return true;
         } catch (SQLException erro) {
             System.out.println("Erro:" + erro);
-            throw new RuntimeException(erro);
+            return false;
         }
     }
-    
+
     public Emprestimo carregaEmprestimo(int id) {
         Emprestimo objeto = new Emprestimo();
         objeto.setId(id);
         try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT * FROM Emprestimo WHERE idEmprestimo = " + id);
-            res.next();
+            Statement stmt = getConexao().createStatement();
 
-            objeto.setDataPrevistaDevolucao(res.getDate("dataPrevistaDevolucao"));
-            objeto.setDataRetirada(res.getDate("dataRetirada"));
-            objeto.setIdAmigo(res.getInt("idAmigo"));
-            objeto.setIdFerramenta(res.getInt("idFerramenta"));
-            objeto.setNome(res.getString("nome")); // Adicionado
-            objeto.setTelefone(res.getString("telefone")); // Adicionado
-            objeto.setFerramenta(res.getString("ferramenta")); // Adicionado
+            ResultSet res = stmt.executeQuery("SELECT * FROM Emprestimo WHERE idEmprestimo = " + id);
+            if (res.next()) {
+                objeto.setDataPrevistaDevolucao(res.getDate("dataPrevistaDevolucao"));
+                objeto.setDataRetirada(res.getDate("dataRetirada"));
+                objeto.setIdAmigo(res.getInt("idAmigo"));
+                objeto.setIdFerramenta(res.getInt("idFerramenta"));
+            }
 
             stmt.close();
         } catch (SQLException erro) {
@@ -151,18 +174,57 @@ public class EmprestimoDAO {
         return objeto;
     }
 
-    public int maiorID() {
-        int maiorID = 0;
+    public ArrayList<Emprestimo> getMinhaLista() {
+        return minhaLista;
+    }
+
+    public static Connection getConexao() throws SQLException {
+        Connection connection = null;
+
         try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT MAX(idEmprestimo) AS id FROM Emprestimo");
-            if (res.next()) {
-                maiorID = res.getInt("id");
+            String driver = "com.mysql.cj.jdbc.Driver";
+            Class.forName(driver);
+
+            String server = "localhost";
+            String database = "emprestimo_ferramentas";
+            String url = "jdbc:mysql://" + server + ":8111/" + database + "?useTimezone=true&serverTimezone=UTC";
+            String user = "root";
+            String password = "";
+
+            connection = DriverManager.getConnection(url, user, password);
+            if (connection != null) {
+                System.out.println("Status: Conectado!");
+            } else {
+                System.out.println("Status: NÃO CONECTADO!");
             }
-            stmt.close();
-        } catch (SQLException ex) {
-            System.out.println("Erro:" + ex);
+
+            return connection;
+        } catch (ClassNotFoundException e) {
+            System.out.println("O driver nao foi encontrado.");
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Nao foi possivel conectar...");
+            return null;
         }
-        return maiorID;
+    }
+
+    public int obterIdPorNome(String nomeFerramenta) {
+        int idFerramenta = -1; // Valor padrão se a ferramenta não for encontrada
+        try {
+            Connection conn = getConexao();
+            String sql = "SELECT idFerramenta FROM Ferramenta WHERE nome = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, nomeFerramenta);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                idFerramenta = rs.getInt("idFerramenta");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println("Erro ao obter o ID da ferramenta: " + ex.getMessage());
+        }
+        return idFerramenta;
     }
 }

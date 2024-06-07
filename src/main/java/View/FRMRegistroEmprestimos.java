@@ -1,26 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
 
 import DAO.EmprestimoDAO;
+import DAO.FerramentaDAO;
+import DAO.AmigoDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import Model.Emprestimo;
 import javax.swing.JOptionPane;
-/**
- *
- * @author 1072324171
- */
+
 public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
     private Emprestimo objetoemprestimo;
+    private EmprestimoDAO emprestimoDAO;
     
     public FRMRegistroEmprestimos() {
         initComponents();
         this.objetoemprestimo = new Emprestimo();
+        this.emprestimoDAO = new EmprestimoDAO();
     }
 
     /**
@@ -143,8 +140,8 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTFregistroEmprestimo_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,67 +204,69 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
     private void jBregistroEmprestimo_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBregistroEmprestimo_cadastrarActionPerformed
         try {
-        // Coletar os dados do formulário
-        String nome = this.jTFregistroEmprestimo_nome.getText();
+        String nomeAmigo = this.jTFregistroEmprestimo_nome.getText();
         String telefone = this.jTFregistroEmprestimo_telefone.getText();
-        String ferramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
-        
-        // Formatar as datas
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date dataRetirada = dateFormat.parse(this.jTFregistroEmprestimo_dataretirada.getText());
-        Date dataPrevistaDevolucao = dateFormat.parse(this.jTFregistroEmprestimo_prevEntrega.getText());
+        String nomeFerramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
 
-        // Validações de campo
-        if (nome.length() < 2) {
-            throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
-        }
+        // Aqui você precisaria obter os IDs do amigo e da ferramenta
+        int idAmigo = obterIdAmigo();
+        int idFerramenta = obterIdFerramenta();
 
-        if (telefone.isEmpty() || telefone.length() < 2) {
-            throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
-        }
-
-        if (ferramenta.length() < 2) {
-            throw new Mensagens("Ferramenta deve conter ao menos 2 caracteres.");
-        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataRetirada = sdf.parse(this.jTFregistroEmprestimo_dataretirada.getText());
+        Date dataPrevistaDevolucao = sdf.parse(this.jTFregistroEmprestimo_prevEntrega.getText());
 
         // Criar um novo objeto de empréstimo
         Emprestimo novoEmprestimo = new Emprestimo();
-        novoEmprestimo.setNome(nome);
+        novoEmprestimo.setNomeAmigo(nomeAmigo);
         novoEmprestimo.setTelefone(telefone);
-        novoEmprestimo.setFerramenta(ferramenta);
+        novoEmprestimo.setNomeFerramenta(nomeFerramenta);
+        novoEmprestimo.setIdAmigo(idAmigo); 
+        novoEmprestimo.setIdFerramenta(idFerramenta); 
         novoEmprestimo.setDataRetirada(dataRetirada);
         novoEmprestimo.setDataPrevistaDevolucao(dataPrevistaDevolucao);
 
         // Inserir no banco de dados
-        EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
-        if (emprestimoDAO.insertEmprestimoBD(novoEmprestimo)) {
-            JOptionPane.showMessageDialog(null, "Empréstimo Cadastrado com Sucesso!");
-            this.jTFregistroEmprestimo_nome.setText("");
-            this.jTFregistroEmprestimo_telefone.setText("");
-            this.jTFregistroEmprestimo_Ferramenta.setText("");
-            this.jTFregistroEmprestimo_dataretirada.setText("");
-            this.jTFregistroEmprestimo_prevEntrega.setText("");
-        } else {
-            JOptionPane.showMessageDialog(null, "Falha ao cadastrar empréstimo.");
-        }
-    } catch (Mensagens erro) {
+        emprestimoDAO.insertEmprestimoBD(novoEmprestimo, nomeAmigo, nomeFerramenta);
+
+        // Exibir mensagem de sucesso
+        JOptionPane.showMessageDialog(this, "Registro cadastrado com sucesso!");
+
+        // Limpar campos do formulário
+        limparCamposFormulario();
+    } catch (IllegalArgumentException erro) {
         JOptionPane.showMessageDialog(null, erro.getMessage());
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "ID do amigo ou da ferramenta deve ser um número inteiro.");
     } catch (ParseException e) {
-        JOptionPane.showMessageDialog(null, "Data no formato inválido. Use o formato yyyy-MM-dd.");
-    }
+        JOptionPane.showMessageDialog(null, "Erro ao converter data. Certifique-se de usar o formato dd/MM/yyyy.");
+    }  
     }//GEN-LAST:event_jBregistroEmprestimo_cadastrarActionPerformed
 
+    private void limparCamposFormulario() {
+    this.jTFregistroEmprestimo_nome.setText("");
+    this.jTFregistroEmprestimo_telefone.setText("");
+    this.jTFregistroEmprestimo_Ferramenta.setText("");
+    this.jTFregistroEmprestimo_dataretirada.setText("");
+    this.jTFregistroEmprestimo_prevEntrega.setText("");
+}
+    
+    private int obterIdFerramenta() {
+        // Implemente aqui a lógica para obter o ID da ferramenta
+        FerramentaDAO ferramentaDAO = new FerramentaDAO();
+        // Supondo que exista um método na classe FerramentaDAO para obter o ID da ferramenta
+        return ferramentaDAO.obterIdPorNome(this.jTFregistroEmprestimo_Ferramenta.getText());
+    }
+    
+    private int obterIdAmigo() {
+        // Implemente aqui a lógica para obter o ID do amigo
+        AmigoDAO amigoDAO = new AmigoDAO();
+        // Supondo que exista um método na classe AmigoDAO para obter o ID do amigo
+        return amigoDAO.obterIdPorNome(this.jTFregistroEmprestimo_nome.getText());
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -287,10 +286,8 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FRMRegistroEmprestimos().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FRMRegistroEmprestimos().setVisible(true);
         });
     }
 
@@ -310,4 +307,6 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
     private javax.swing.JTextField jTFregistroEmprestimo_prevEntrega;
     private javax.swing.JTextField jTFregistroEmprestimo_telefone;
     // End of variables declaration//GEN-END:variables
+
+
 }
