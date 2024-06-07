@@ -16,35 +16,37 @@ public class EmprestimoDAO {
     public ArrayList<Emprestimo> minhaLista = new ArrayList<>();
 
     public ArrayList<Emprestimo> getListaEmprestimos() {
-        ArrayList<Emprestimo> emprestimos = new ArrayList<>();
+    ArrayList<Emprestimo> emprestimos = new ArrayList<>();
 
-        try (Connection conn = getConexao();
-             Statement stmt = conn.createStatement();
-             ResultSet res = stmt.executeQuery("SELECT e.idEmprestimo, e.dataPrevistaDevolucao, e.dataRetirada, " +
-                     "a.nome AS nomeAmigo, f.nome AS nomeFerramenta, e.idAmigo, e.idFerramenta " +
-                     "FROM Emprestimo e " +
-                     "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
-                     "JOIN Ferramenta f ON e.idFerramenta = f.idFerramenta")) {
-            while (res.next()) {
-                int id = res.getInt("idEmprestimo");
-                Date dataPrevistaDevolucao = res.getDate("dataPrevistaDevolucao");
-                Date dataRetirada = res.getDate("dataRetirada");
-                String nomeAmigo = res.getString("nomeAmigo");
-                String nomeFerramenta = res.getString("nomeFerramenta");
-                int idAmigo = res.getInt("idAmigo");
-                int idFerramenta = res.getInt("idFerramenta");
+    try (Connection conn = getConexao();
+         Statement stmt = conn.createStatement();
+         ResultSet res = stmt.executeQuery("SELECT e.idEmprestimo, e.dataPrevistaDevolucao, e.dataRetirada, " +
+                 "a.nome AS nomeAmigo, a.telefone, f.nome AS nomeFerramenta, e.idAmigo, e.idFerramenta " +
+                 "FROM Emprestimo e " +
+                 "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
+                 "JOIN Ferramenta f ON e.idFerramenta = f.idFerramenta")) {
+        while (res.next()) {
+            int id = res.getInt("idEmprestimo");
+            Date dataPrevistaDevolucao = res.getDate("dataPrevistaDevolucao");
+            Date dataRetirada = res.getDate("dataRetirada");
+            String nomeAmigo = res.getString("nomeAmigo");
+            String telefone = res.getString("telefone");
+            String nomeFerramenta = res.getString("nomeFerramenta");
+            int idAmigo = res.getInt("idAmigo");
+            int idFerramenta = res.getInt("idFerramenta");
 
-                // Criando o objeto de empréstimo
-                Emprestimo emprestimo = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, null, nomeFerramenta);
-                emprestimo.setIdAmigo(idAmigo); // Definindo o id do amigo
-                emprestimo.setIdFerramenta(idFerramenta); // Definindo o id da ferramenta
-                emprestimos.add(emprestimo);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Erro:" + ex);
+            // Criando o objeto de empréstimo
+            Emprestimo emprestimo = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, telefone, nomeFerramenta);
+            emprestimo.setIdAmigo(idAmigo); // Definindo o id do amigo
+            emprestimo.setIdFerramenta(idFerramenta); // Definindo o id da ferramenta
+            emprestimos.add(emprestimo);
         }
-        return emprestimos;
+    } catch (SQLException ex) {
+        System.out.println("Erro:" + ex);
     }
+    return emprestimos;
+}
+
 
     public void setMinhaLista(ArrayList<Emprestimo> minhaLista) {
         this.minhaLista = minhaLista;

@@ -95,7 +95,7 @@ public class Emprestimo {
     }
 
     public ArrayList<Emprestimo> getMinhaLista() {
-        return DAO.getMinhaLista();
+        return DAO.getListaEmprestimos();
     }
 
     public boolean insertEmprestimoBD(String nomeAmigo, String telefone, String nomeFerramenta, Date dataRetirada, Date dataPrevistaDevolucao){

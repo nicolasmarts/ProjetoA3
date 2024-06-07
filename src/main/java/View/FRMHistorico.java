@@ -109,59 +109,48 @@ public class FRMHistorico extends javax.swing.JFrame {
 
     private void jThistoricoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jThistoricoMouseClicked
         if (this.jThistorico.getSelectedRow() != -1) {
-            String nome = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 0).toString();
-            String telefone = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 1).toString();
-            String ferramenta = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 2).toString();
+            String nome = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 1).toString();
+            String telefone = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 2).toString();
+            String ferramenta = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 3).toString();
         
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         
-            String dataRetiradaString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 3).toString();
-            String dataPrevistaDevolucaoString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 4).toString();
+            String dataRetiradaString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 4).toString();
+            String dataPrevistaDevolucaoString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 5).toString();
 
-        try {
-            Date dataRetirada = sdf.parse(dataRetiradaString);
-            Date dataPrevistaDevolucao = sdf.parse(dataPrevistaDevolucaoString);
-            // Agora você pode usar dataRetirada e dataPrevistaDevolucao conforme necessário
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            try {
+                Date dataRetirada = sdf.parse(dataRetiradaString);
+                Date dataPrevistaDevolucao = sdf.parse(dataPrevistaDevolucaoString);
+                // Agora você pode usar dataRetirada e dataPrevistaDevolucao conforme necessário
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jThistoricoMouseClicked
 
     public void carregaTabela() {
-        DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();
-        modelo.setNumRows(0);
-        ArrayList<Emprestimo> minhalista = objetoemprestimo.getMinhaLista();
+    DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();
+    modelo.setNumRows(0);
+    ArrayList<Emprestimo> minhalista = objetoemprestimo.getMinhaLista();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        for (Emprestimo a : minhalista) {
-            modelo.addRow(new Object[]{
-                a.getNomeAmigo(),
-                a.getTelefone(),
-                a.getNomeFerramenta(),
-                sdf.format(a.getDataRetirada()),
-                sdf.format(a.getDataPrevistaDevolucao())
-            });
-        }
+    for (Emprestimo a : minhalista) {
+        modelo.addRow(new Object[]{
+            a.getId(),
+            a.getNomeAmigo(),
+            a.getTelefone(), // Incluindo o telefone
+            a.getNomeFerramenta(),
+            sdf.format(a.getDataRetirada()),
+            sdf.format(a.getDataPrevistaDevolucao())
+        });
     }
-   
-   public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+}
 
-        /* Create and display the form */
+   
+    public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            new FRMRelatorioAmigos().setVisible(true);
+            new FRMHistorico().setVisible(true);
         });
     }
 
