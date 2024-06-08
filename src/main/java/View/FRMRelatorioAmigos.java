@@ -31,7 +31,7 @@ public class FRMRelatorioAmigos extends javax.swing.JFrame {
         jBrelatorioAtivos_voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Relatório de empréstimos amigos");
+        setTitle("Relatório de amigos");
 
         jTativos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

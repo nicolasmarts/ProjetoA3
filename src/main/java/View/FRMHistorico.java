@@ -64,6 +64,12 @@ public class FRMHistorico extends javax.swing.JFrame {
         jLabel1.setText("Amigo que faz mais empréstimos:");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         jBhistorico_voltar.setText("Voltar");
         jBhistorico_voltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +133,10 @@ public class FRMHistorico extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jThistoricoMouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     public void carregaTabela() {
     DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();

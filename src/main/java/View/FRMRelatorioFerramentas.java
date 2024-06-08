@@ -36,6 +36,7 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
         jBRelatorioFerramentas_voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Relatório de ferramentas");
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

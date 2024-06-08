@@ -4,8 +4,6 @@
  */
 package View;
 
-import DAO.HistoricoPersonalizadoDAO;
-import Model.HistoricoPersonalizado;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
