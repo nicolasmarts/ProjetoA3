@@ -16,6 +16,9 @@ public class FRMHistorico extends javax.swing.JFrame {
         initComponents();
         this.objetoemprestimo = new Emprestimo();
         this.carregaTabela();
+        System.out.println("Objeto emprestimo inicializado: " + (objetoemprestimo != null));
+    // Chama o método para preencher o campo de texto na inicialização
+    preencherCampoAmigoComMaisEmprestimos();
     }
     
     /**
@@ -30,7 +33,7 @@ public class FRMHistorico extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jThistorico = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTFhistorico_maisEmprestimos = new javax.swing.JTextField();
         jBhistorico_voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -64,9 +67,9 @@ public class FRMHistorico extends javax.swing.JFrame {
         jLabel1.setText("Amigo que faz mais empréstimos:");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTFhistorico_maisEmprestimos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTFhistorico_maisEmprestimosActionPerformed(evt);
             }
         });
 
@@ -83,14 +86,13 @@ public class FRMHistorico extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jBhistorico_voltar, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                    .addComponent(jTFhistorico_maisEmprestimos))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jBhistorico_voltar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,10 +101,10 @@ public class FRMHistorico extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                    .addComponent(jTFhistorico_maisEmprestimos, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jBhistorico_voltar)
-                .addContainerGap())
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,9 +136,16 @@ public class FRMHistorico extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jThistoricoMouseClicked
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void jTFhistorico_maisEmprestimosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFhistorico_maisEmprestimosActionPerformed
+        System.out.println("Ação do jTextField1 disparada");
+    String amigoComMaisEmprestimos = objetoemprestimo.getAmigoComMaisEmprestimos();
+    System.out.println("Amigo com mais empréstimos: " + amigoComMaisEmprestimos);
+    if (amigoComMaisEmprestimos != null) {
+        jTFhistorico_maisEmprestimos.setText(amigoComMaisEmprestimos);
+    } else {
+        jTFhistorico_maisEmprestimos.setText("Nenhum amigo encontrado");
+    }
+    }//GEN-LAST:event_jTFhistorico_maisEmprestimosActionPerformed
 
     public void carregaTabela() {
     DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();
@@ -157,18 +166,29 @@ public class FRMHistorico extends javax.swing.JFrame {
     }
 }
 
+    
+    private void preencherCampoAmigoComMaisEmprestimos() {
+    String amigoComMaisEmprestimos = objetoemprestimo.getAmigoComMaisEmprestimos();
+    if (amigoComMaisEmprestimos != null) {
+        jTFhistorico_maisEmprestimos.setText(amigoComMaisEmprestimos);
+    } else {
+        jTFhistorico_maisEmprestimos.setText("Nenhum amigo encontrado");
+    }
+}
+
    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new FRMHistorico().setVisible(true);
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBhistorico_voltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTFhistorico_maisEmprestimos;
     private javax.swing.JTable jThistorico;
     // End of variables declaration//GEN-END:variables
 }

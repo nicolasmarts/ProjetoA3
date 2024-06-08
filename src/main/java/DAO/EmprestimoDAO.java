@@ -229,4 +229,33 @@ public class EmprestimoDAO {
         }
         return idFerramenta;
     }
+    
+    public String getAmigoComMaisEmprestimos() {
+    String amigoComMaisEmprestimos = null;
+
+    try (Connection conn = getConexao();
+         Statement stmt = conn.createStatement()) {
+        String query = "SELECT a.nome AS amigo, COUNT(e.idEmprestimo) as emprestimos " +
+                       "FROM Emprestimo e " +
+                       "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
+                       "GROUP BY a.nome " +
+                       "ORDER BY emprestimos DESC " +
+                       "LIMIT 1";
+        System.out.println("Executando query: " + query);
+        ResultSet rs = stmt.executeQuery(query);
+
+        if (rs.next()) {
+            amigoComMaisEmprestimos = rs.getString("amigo");
+            System.out.println("Amigo encontrado: " + amigoComMaisEmprestimos);
+        } else {
+            System.out.println("Nenhum amigo encontrado na consulta");
+        }
+
+        rs.close();
+    } catch (SQLException e) {
+        System.out.println("Erro ao obter amigo com mais empréstimos: " + e.getMessage());
+    }
+
+    return amigoComMaisEmprestimos;
+}
 }

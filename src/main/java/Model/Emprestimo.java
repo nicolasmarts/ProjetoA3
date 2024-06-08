@@ -4,6 +4,12 @@ import DAO.EmprestimoDAO;
 import java.util.ArrayList;
 import java.util.Date;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Emprestimo {
     private int id;
     private Date dataPrevistaDevolucao;
@@ -119,5 +125,50 @@ public class Emprestimo {
 
     public int maiorID(){
         return DAO.maiorID();
+    }
+    
+    public Connection getConexao() {
+    Connection connection = null;
+    try {
+        // Configurar a conexão com o banco de dados
+        String url = "jdbc:mysql://localhost:8111/emprestimo_ferramentas";
+        String user = "root";
+        String password = "";
+        
+        // Estabelecer a conexão
+        connection = DriverManager.getConnection(url, user, password);
+        System.out.println("Conexão com o banco de dados bem-sucedida!");
+    } catch (SQLException e) {
+        System.out.println("Erro ao conectar ao banco de dados: " + e.getMessage());
+    }
+    return connection;
+}
+    public String getAmigoComMaisEmprestimos() {
+        String amigoComMaisEmprestimos = null;
+
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement()) {
+            String query = "SELECT a.nome AS amigo, COUNT(e.idEmprestimo) as emprestimos " +
+                           "FROM Emprestimo e " +
+                           "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
+                           "GROUP BY a.nome " +
+                           "ORDER BY emprestimos DESC " +
+                           "LIMIT 1";
+            System.out.println("Executando query: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                amigoComMaisEmprestimos = rs.getString("amigo");
+                System.out.println("Amigo encontrado: " + amigoComMaisEmprestimos);
+            } else {
+                System.out.println("Nenhum amigo encontrado na consulta");
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter amigo com mais empréstimos: " + e.getMessage());
+        }
+
+        return amigoComMaisEmprestimos;
     }
 }

@@ -31,9 +31,14 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jBRelatorioFerramentas_voltar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTFrelatorio_custoTotal = new javax.swing.JTextField();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Relatório de ferramentas");
@@ -65,23 +70,39 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Custo total:");
+
+        jTFrelatorio_custoTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTFrelatorio_custoTotalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(179, 179, 179)
-                .addComponent(jBRelatorioFerramentas_voltar)
+                .addGap(59, 59, 59)
+                .addComponent(jLabel1)
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTFrelatorio_custoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBRelatorioFerramentas_voltar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTFrelatorio_custoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jBRelatorioFerramentas_voltar)
-                .addGap(0, 32, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -90,22 +111,43 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
     private void jBRelatorioFerramentas_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRelatorioFerramentas_voltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBRelatorioFerramentas_voltarActionPerformed
+
+    private void jTFrelatorio_custoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFrelatorio_custoTotalActionPerformed
+        calcularCustoTotal();
+    }//GEN-LAST:event_jTFrelatorio_custoTotalActionPerformed
     
     public void carregaTabela() {
-        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-        modelo.setNumRows(0);
-        Ferramenta ferramenta = new Ferramenta();
-        ArrayList<Ferramenta> ferramentas = ferramenta.getMinhaLista();
-        for (Ferramenta f : ferramentas) {
-            modelo.addRow(new Object[]{
-                f.getId(),
-                f.getNome(),
-                f.getMarca(),
-                f.getCusto()
-            });
-        }
+    DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+    modelo.setNumRows(0);
+    Ferramenta ferramenta = new Ferramenta();
+    ArrayList<Ferramenta> ferramentas = ferramenta.getMinhaLista();
+    for (Ferramenta f : ferramentas) {
+        modelo.addRow(new Object[]{
+            f.getId(),
+            f.getNome(),
+            f.getMarca(),
+            f.getCusto()
+        });
+    }
+    calcularCustoTotal(); // Chama o método para calcular o custo total após carregar a tabela
+}
+    
+    private void calcularCustoTotal() {
+    double custoTotal = 0.0;
+    
+    DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+    int rowCount = modelo.getRowCount();
+    for (int i = 0; i < rowCount; i++) {
+        // Obter o custo da ferramenta na linha i
+        double custoFerramenta = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+        
+        // Adicionar o custo ao custo total
+        custoTotal += custoFerramenta;
     }
     
+    // Exibir o custo total no campo de texto
+    jTFrelatorio_custoTotal.setText(String.valueOf(custoTotal));
+}
     
     /**
      * @param args the command line arguments
@@ -118,7 +160,10 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBRelatorioFerramentas_voltar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTFrelatorio_custoTotal;
     private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
