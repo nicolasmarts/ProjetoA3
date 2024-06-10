@@ -11,25 +11,23 @@ public class Amigo {
     private AmigoDAO DAO;
     
     public Amigo(){
-        this.DAO = new AmigoDAO(); // Inicializando o DAO no construtor padrão
+        this.DAO = new AmigoDAO();
     }
     
     public Amigo(String nome, String telefone, String email){
-        this(); // Chamando o construtor padrão para inicializar o DAO
+        this();
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
     }
 
     public Amigo(int id, String nome, String telefone, String email) {
-        this(); // Chamando o construtor padrão para inicializar o DAO
+        this();
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
     }
-
-    // Métodos getters e setters
 
     public int getId() {
         return id;
@@ -62,8 +60,6 @@ public class Amigo {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    // Métodos relacionados ao banco de dados
 
     public ArrayList<Amigo> getMinhaLista() {
         return DAO.getMinhaLista();

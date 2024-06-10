@@ -8,15 +8,8 @@ import Model.Ferramenta;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author 1072324171
- */
 public class FRMRelatorioFerramentas extends javax.swing.JFrame {
-
-    /**
-     * Creates new form FRMRelatorioFerramentas
-     */
+    
     public FRMRelatorioFerramentas() {
         initComponents();
         carregaTabela();
@@ -117,37 +110,31 @@ public class FRMRelatorioFerramentas extends javax.swing.JFrame {
     }//GEN-LAST:event_jTFrelatorio_custoTotalActionPerformed
     
     public void carregaTabela() {
-    DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-    modelo.setNumRows(0);
-    Ferramenta ferramenta = new Ferramenta();
-    ArrayList<Ferramenta> ferramentas = ferramenta.getMinhaLista();
-    for (Ferramenta f : ferramentas) {
-        modelo.addRow(new Object[]{
-            f.getId(),
-            f.getNome(),
-            f.getMarca(),
-            f.getCusto()
-        });
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        modelo.setNumRows(0);
+        Ferramenta ferramenta = new Ferramenta();
+        ArrayList<Ferramenta> ferramentas = ferramenta.getMinhaLista();
+        for (Ferramenta f : ferramentas) {
+            modelo.addRow(new Object[]{
+                f.getId(),
+                f.getNome(),
+                f.getMarca(),
+                f.getCusto()
+            });
+        }
+        calcularCustoTotal();
     }
-    calcularCustoTotal(); // Chama o método para calcular o custo total após carregar a tabela
-}
     
     private void calcularCustoTotal() {
-    double custoTotal = 0.0;
-    
-    DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-    int rowCount = modelo.getRowCount();
-    for (int i = 0; i < rowCount; i++) {
-        // Obter o custo da ferramenta na linha i
-        double custoFerramenta = Double.parseDouble(modelo.getValueAt(i, 3).toString());
-        
-        // Adicionar o custo ao custo total
-        custoTotal += custoFerramenta;
+        double custoTotal = 0.0;
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        int rowCount = modelo.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            double custoFerramenta = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+            custoTotal += custoFerramenta;
+        }
+        jTFrelatorio_custoTotal.setText(String.valueOf(custoTotal));
     }
-    
-    // Exibir o custo total no campo de texto
-    jTFrelatorio_custoTotal.setText(String.valueOf(custoTotal));
-}
     
     /**
      * @param args the command line arguments

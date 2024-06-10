@@ -15,8 +15,6 @@ public class FRMRelatorioAmigos extends javax.swing.JFrame {
         this.carregaTabela();
     }
     
-   
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -109,7 +107,6 @@ public class FRMRelatorioAmigos extends javax.swing.JFrame {
             String nome = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 1).toString();
             String telefone = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 2).toString();
             String email = this.jTativos.getValueAt(this.jTativos.getSelectedRow(), 3).toString();
-          
         } 
     }//GEN-LAST:event_jTativosMouseClicked
 
@@ -126,6 +123,7 @@ public class FRMRelatorioAmigos extends javax.swing.JFrame {
             });
         }
     }
+    
     /**
      * @param args the command line arguments
      */

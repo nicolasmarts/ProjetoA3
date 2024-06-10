@@ -8,24 +8,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author 10723114087
- */
+
 public class FRMMenu extends javax.swing.JFrame {
 
     private Connection connection;
-    /**
-     * Creates new form FRMMenu
-     */
+    
     public FRMMenu() {
         initComponents();
     }
     
     public void setConnection(Connection connection) {
         this.connection = connection;
-        // Ao receber a conexão, você pode fazer o que quiser com ela, como usar para
-        // executar consultas ou outras operações no banco de dados
     }
 
     /**
@@ -193,9 +186,6 @@ public class FRMMenu extends javax.swing.JFrame {
         objeto.setVisible(true);
     }//GEN-LAST:event_jMIregistros_registrosemprestimosActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

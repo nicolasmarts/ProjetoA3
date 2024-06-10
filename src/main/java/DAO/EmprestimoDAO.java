@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.Emprestimo;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,36 +15,33 @@ public class EmprestimoDAO {
     public ArrayList<Emprestimo> minhaLista = new ArrayList<>();
 
     public ArrayList<Emprestimo> getListaEmprestimos() {
-    ArrayList<Emprestimo> emprestimos = new ArrayList<>();
-
-    try (Connection conn = getConexao();
-         Statement stmt = conn.createStatement();
-         ResultSet res = stmt.executeQuery("SELECT e.idEmprestimo, e.dataPrevistaDevolucao, e.dataRetirada, " +
-                 "a.nome AS nomeAmigo, a.telefone, f.nome AS nomeFerramenta, e.idAmigo, e.idFerramenta " +
-                 "FROM Emprestimo e " +
-                 "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
-                 "JOIN Ferramenta f ON e.idFerramenta = f.idFerramenta")) {
-        while (res.next()) {
-            int id = res.getInt("idEmprestimo");
-            Date dataPrevistaDevolucao = res.getDate("dataPrevistaDevolucao");
-            Date dataRetirada = res.getDate("dataRetirada");
-            String nomeAmigo = res.getString("nomeAmigo");
-            String telefone = res.getString("telefone");
-            String nomeFerramenta = res.getString("nomeFerramenta");
-            int idAmigo = res.getInt("idAmigo");
-            int idFerramenta = res.getInt("idFerramenta");
-
-            // Criando o objeto de empréstimo
-            Emprestimo emprestimo = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, telefone, nomeFerramenta);
-            emprestimo.setIdAmigo(idAmigo); // Definindo o id do amigo
-            emprestimo.setIdFerramenta(idFerramenta); // Definindo o id da ferramenta
-            emprestimos.add(emprestimo);
+        ArrayList<Emprestimo> emprestimos = new ArrayList<>();
+        try (Connection conn = getConexao();
+                Statement stmt = conn.createStatement();
+                ResultSet res = stmt.executeQuery("SELECT e.idEmprestimo, e.dataPrevistaDevolucao, e.dataRetirada, " + 
+                        "a.nome AS nomeAmigo, a.telefone, f.nome AS nomeFerramenta, e.idAmigo, e.idFerramenta " + 
+                        "FROM Emprestimo e " + 
+                        "JOIN Amigo a ON e.idAmigo = a.idAmigo " + 
+                        "JOIN Ferramenta f ON e.idFerramenta = f.idFerramenta")) {
+            while (res.next()) {
+                int id = res.getInt("idEmprestimo");
+                Date dataPrevistaDevolucao = res.getDate("dataPrevistaDevolucao");
+                Date dataRetirada = res.getDate("dataRetirada");
+                String nomeAmigo = res.getString("nomeAmigo");
+                String telefone = res.getString("telefone");
+                String nomeFerramenta = res.getString("nomeFerramenta");
+                int idAmigo = res.getInt("idAmigo");
+                int idFerramenta = res.getInt("idFerramenta");
+                Emprestimo emprestimo = new Emprestimo(id, dataPrevistaDevolucao, dataRetirada, nomeAmigo, telefone, nomeFerramenta);
+                emprestimo.setIdAmigo(idAmigo);
+                emprestimo.setIdFerramenta(idFerramenta);
+                emprestimos.add(emprestimo);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro:" + ex);
         }
-    } catch (SQLException ex) {
-        System.out.println("Erro:" + ex);
+        return emprestimos;
     }
-    return emprestimos;
-}
 
 
     public void setMinhaLista(ArrayList<Emprestimo> minhaLista) {
@@ -71,16 +67,13 @@ public class EmprestimoDAO {
         try {
             int idAmigo = getIdAmigoPorNome(nomeAmigo);
             int idFerramenta = getIdFerramentaPorNome(nomeFerramenta);
-
             PreparedStatement stmt = getConexao().prepareStatement(sql);
             stmt.setDate(1, new java.sql.Date(objeto.getDataPrevistaDevolucao().getTime()));
             stmt.setDate(2, new java.sql.Date(objeto.getDataRetirada().getTime()));
             stmt.setInt(3, idAmigo);
             stmt.setInt(4, idFerramenta);
-
             stmt.execute();
             stmt.close();
-
             return true;
         } catch (SQLException erro) {
             System.out.println("Erro:" + erro);
@@ -137,17 +130,14 @@ public class EmprestimoDAO {
         String sql = "UPDATE Emprestimo SET dataPrevistaDevolucao = ?, dataRetirada = ?, nomeAmigo = ?, telefone = ?, nomeFerramenta = ? WHERE idEmprestimo = ?";
         try {
             PreparedStatement stmt = getConexao().prepareStatement(sql);
-
             stmt.setDate(1, new java.sql.Date(objeto.getDataPrevistaDevolucao().getTime()));
             stmt.setDate(2, new java.sql.Date(objeto.getDataRetirada().getTime()));
             stmt.setString(3, objeto.getNomeAmigo());
             stmt.setString(4, objeto.getTelefone());
             stmt.setString(5, objeto.getNomeFerramenta());
             stmt.setInt(6, objeto.getId());
-
             stmt.executeUpdate();
             stmt.close();
-
             return true;
         } catch (SQLException erro) {
             System.out.println("Erro:" + erro);
@@ -160,7 +150,6 @@ public class EmprestimoDAO {
         objeto.setId(id);
         try {
             Statement stmt = getConexao().createStatement();
-
             ResultSet res = stmt.executeQuery("SELECT * FROM Emprestimo WHERE idEmprestimo = " + id);
             if (res.next()) {
                 objeto.setDataPrevistaDevolucao(res.getDate("dataPrevistaDevolucao"));
@@ -168,7 +157,6 @@ public class EmprestimoDAO {
                 objeto.setIdAmigo(res.getInt("idAmigo"));
                 objeto.setIdFerramenta(res.getInt("idFerramenta"));
             }
-
             stmt.close();
         } catch (SQLException erro) {
             System.out.println("Erro:" + erro);
@@ -182,24 +170,20 @@ public class EmprestimoDAO {
 
     public static Connection getConexao() throws SQLException {
         Connection connection = null;
-
         try {
             String driver = "com.mysql.cj.jdbc.Driver";
             Class.forName(driver);
-
             String server = "localhost";
             String database = "emprestimo_ferramentas";
             String url = "jdbc:mysql://" + server + ":8111/" + database + "?useTimezone=true&serverTimezone=UTC";
             String user = "root";
             String password = "";
-
             connection = DriverManager.getConnection(url, user, password);
             if (connection != null) {
                 System.out.println("Status: Conectado!");
             } else {
                 System.out.println("Status: NÃO CONECTADO!");
             }
-
             return connection;
         } catch (ClassNotFoundException e) {
             System.out.println("O driver nao foi encontrado.");
@@ -211,7 +195,7 @@ public class EmprestimoDAO {
     }
 
     public int obterIdPorNome(String nomeFerramenta) {
-        int idFerramenta = -1; // Valor padrão se a ferramenta não for encontrada
+        int idFerramenta = -1;
         try {
             Connection conn = getConexao();
             String sql = "SELECT idFerramenta FROM Ferramenta WHERE nome = ?";
@@ -231,31 +215,27 @@ public class EmprestimoDAO {
     }
     
     public String getAmigoComMaisEmprestimos() {
-    String amigoComMaisEmprestimos = null;
-
-    try (Connection conn = getConexao();
-         Statement stmt = conn.createStatement()) {
-        String query = "SELECT a.nome AS amigo, COUNT(e.idEmprestimo) as emprestimos " +
-                       "FROM Emprestimo e " +
-                       "JOIN Amigo a ON e.idAmigo = a.idAmigo " +
-                       "GROUP BY a.nome " +
-                       "ORDER BY emprestimos DESC " +
-                       "LIMIT 1";
-        System.out.println("Executando query: " + query);
-        ResultSet rs = stmt.executeQuery(query);
-
-        if (rs.next()) {
-            amigoComMaisEmprestimos = rs.getString("amigo");
-            System.out.println("Amigo encontrado: " + amigoComMaisEmprestimos);
-        } else {
-            System.out.println("Nenhum amigo encontrado na consulta");
+        String amigoComMaisEmprestimos = null;
+        try (Connection conn = getConexao();
+                Statement stmt = conn.createStatement()) {
+            String query = "SELECT a.nome AS amigo, COUNT(e.idEmprestimo) as emprestimos " + 
+                    "FROM Emprestimo e " + 
+                    "JOIN Amigo a ON e.idAmigo = a.idAmigo " + 
+                    "GROUP BY a.nome " + 
+                    "ORDER BY emprestimos DESC " + 
+                    "LIMIT 1";
+            System.out.println("Executando query: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                amigoComMaisEmprestimos = rs.getString("amigo");
+                System.out.println("Amigo encontrado: " + amigoComMaisEmprestimos);
+            } else {
+                System.out.println("Nenhum amigo encontrado na consulta");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter amigo com mais empréstimos: " + e.getMessage());
         }
-
-        rs.close();
-    } catch (SQLException e) {
-        System.out.println("Erro ao obter amigo com mais empréstimos: " + e.getMessage());
+        return amigoComMaisEmprestimos;
     }
-
-    return amigoComMaisEmprestimos;
-}
 }

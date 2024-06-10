@@ -3,7 +3,6 @@ package Model;
 import DAO.EmprestimoDAO;
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -34,8 +33,7 @@ public class Emprestimo {
         this.telefone = telefone;
         this.nomeFerramenta = nomeFerramenta;
     }
-
-    // Getters and setters
+    
     public int getId() {
         return id;
     }
@@ -130,12 +128,9 @@ public class Emprestimo {
     public Connection getConexao() {
     Connection connection = null;
     try {
-        // Configurar a conexão com o banco de dados
         String url = "jdbc:mysql://localhost:8111/emprestimo_ferramentas";
         String user = "root";
         String password = "";
-        
-        // Estabelecer a conexão
         connection = DriverManager.getConnection(url, user, password);
         System.out.println("Conexão com o banco de dados bem-sucedida!");
     } catch (SQLException e) {

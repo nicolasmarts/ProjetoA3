@@ -201,69 +201,54 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
 
     private void jBregistroEmprestimo_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBregistroEmprestimo_cadastrarActionPerformed
         try {
-        String nomeAmigo = this.jTFregistroEmprestimo_nome.getText();
-        String telefone = this.jTFregistroEmprestimo_telefone.getText();
-        String nomeFerramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
-
-        // Aqui você precisaria obter os IDs do amigo e da ferramenta
-        int idAmigo = obterIdAmigo();
-        int idFerramenta = obterIdFerramenta();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataRetirada = sdf.parse(this.jTFregistroEmprestimo_dataretirada.getText());
-        Date dataPrevistaDevolucao = sdf.parse(this.jTFregistroEmprestimo_prevEntrega.getText());
-
-        // Criar um novo objeto de empréstimo
-        Emprestimo novoEmprestimo = new Emprestimo();
-        novoEmprestimo.setNomeAmigo(nomeAmigo);
-        novoEmprestimo.setTelefone(telefone);
-        novoEmprestimo.setNomeFerramenta(nomeFerramenta);
-        novoEmprestimo.setIdAmigo(idAmigo); 
-        novoEmprestimo.setIdFerramenta(idFerramenta); 
-        novoEmprestimo.setDataRetirada(dataRetirada);
-        novoEmprestimo.setDataPrevistaDevolucao(dataPrevistaDevolucao);
-
-        // Inserir no banco de dados
-        emprestimoDAO.insertEmprestimoBD(novoEmprestimo, nomeAmigo, nomeFerramenta);
-
-        // Exibir mensagem de sucesso
-        JOptionPane.showMessageDialog(this, "Registro cadastrado com sucesso!");
-
-        // Limpar campos do formulário
-        limparCamposFormulario();
-    } catch (IllegalArgumentException erro) {
-        JOptionPane.showMessageDialog(null, erro.getMessage());
-    } catch (ParseException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao converter data. Certifique-se de usar o formato dd/MM/yyyy.");
-    }  
+            String nomeAmigo = this.jTFregistroEmprestimo_nome.getText();
+            String telefone = this.jTFregistroEmprestimo_telefone.getText();
+            String nomeFerramenta = this.jTFregistroEmprestimo_Ferramenta.getText();
+            int idAmigo = obterIdAmigo();
+            int idFerramenta = obterIdFerramenta();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataRetirada = sdf.parse(this.jTFregistroEmprestimo_dataretirada.getText());
+            Date dataPrevistaDevolucao = sdf.parse(this.jTFregistroEmprestimo_prevEntrega.getText());
+            Emprestimo novoEmprestimo = new Emprestimo();
+            novoEmprestimo.setNomeAmigo(nomeAmigo);
+            novoEmprestimo.setTelefone(telefone);
+            novoEmprestimo.setNomeFerramenta(nomeFerramenta);
+            novoEmprestimo.setIdAmigo(idAmigo); 
+            novoEmprestimo.setIdFerramenta(idFerramenta); 
+            novoEmprestimo.setDataRetirada(dataRetirada);
+            novoEmprestimo.setDataPrevistaDevolucao(dataPrevistaDevolucao);
+            emprestimoDAO.insertEmprestimoBD(novoEmprestimo, nomeAmigo, nomeFerramenta);
+            JOptionPane.showMessageDialog(this, "Registro cadastrado com sucesso!");
+            limparCamposFormulario();
+        } catch (IllegalArgumentException erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao converter data. Certifique-se de usar o formato dd/MM/yyyy.");
+        }  
     }//GEN-LAST:event_jBregistroEmprestimo_cadastrarActionPerformed
 
     private void limparCamposFormulario() {
-    this.jTFregistroEmprestimo_nome.setText("");
-    this.jTFregistroEmprestimo_telefone.setText("");
-    this.jTFregistroEmprestimo_Ferramenta.setText("");
-    this.jTFregistroEmprestimo_dataretirada.setText("");
-    this.jTFregistroEmprestimo_prevEntrega.setText("");
-}
+        this.jTFregistroEmprestimo_nome.setText("");
+        this.jTFregistroEmprestimo_telefone.setText("");
+        this.jTFregistroEmprestimo_Ferramenta.setText("");
+        this.jTFregistroEmprestimo_dataretirada.setText("");
+        this.jTFregistroEmprestimo_prevEntrega.setText("");
+    }
     
     private int obterIdFerramenta() {
-        // Implemente aqui a lógica para obter o ID da ferramenta
         FerramentaDAO ferramentaDAO = new FerramentaDAO();
-        // Supondo que exista um método na classe FerramentaDAO para obter o ID da ferramenta
         return ferramentaDAO.obterIdPorNome(this.jTFregistroEmprestimo_Ferramenta.getText());
     }
     
     private int obterIdAmigo() {
-        // Implemente aqui a lógica para obter o ID do amigo
         AmigoDAO amigoDAO = new AmigoDAO();
-        // Supondo que exista um método na classe AmigoDAO para obter o ID do amigo
         return amigoDAO.obterIdPorNome(this.jTFregistroEmprestimo_nome.getText());
     }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -280,9 +265,6 @@ public class FRMRegistroEmprestimos extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FRMRegistroEmprestimos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new FRMRegistroEmprestimos().setVisible(true);
         });

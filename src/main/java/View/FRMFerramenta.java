@@ -6,10 +6,7 @@ package View;
 
 import Model.Ferramenta;
 import javax.swing.JOptionPane;
-/**
- *
- * @author 10723114087
- */
+
 public class FRMFerramenta extends javax.swing.JFrame {
     
     private Ferramenta objetoferramenta;
@@ -160,22 +157,18 @@ public class FRMFerramenta extends javax.swing.JFrame {
             String nome = this.jTFferramenta_nome.getText();
             String marca = this.jTFferramenta_marca.getText();
             String custoStr = this.jTFferramenta_custo.getText();
-            
             if (nome.length() < 2) {
                 throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
             }
-            
             if (marca.isEmpty() || marca.length() < 2) {
                 throw new Mensagens("Marca deve conter ao menos 2 caracteres.");
             }
-            
             double custo;
             try {
                 custo = Double.parseDouble(custoStr);
             } catch (NumberFormatException e) {
                 throw new Mensagens("Custo deve ser um número válido.");
             }
-            
             if (this.objetoferramenta.insertFerramentaBD(nome, marca, custo)) {
                 JOptionPane.showMessageDialog(null, "Ferramenta Cadastrada com Sucesso!");
                 this.jTFferramenta_nome.setText("");

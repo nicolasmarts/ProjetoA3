@@ -6,10 +6,7 @@ package View;
 
 import Model.Amigo;
 import javax.swing.JOptionPane;
-/**
- *
- * @author 10723114087
- */
+
 public class FRMAmigo extends javax.swing.JFrame {
 
     private Amigo objetoamigo;
@@ -166,26 +163,22 @@ public class FRMAmigo extends javax.swing.JFrame {
             String nome = this.jTFamigo_nome.getText();
             String telefone = this.jTFamigo_telefone.getText();
             String email = this.jTFamigo_email.getText();
-        
             if (nome.length() < 2) {
-            throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
+                throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
             }
-        
             if (telefone.isEmpty() || telefone.length() < 2) {
-            throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
+                throw new Mensagens("Telefone deve conter ao menos 2 caracteres.");
             }
-        
             if (email.length() < 2) {
-            throw new Mensagens("E-mail deve conter ao menos 2 caracteres.");
+                throw new Mensagens("E-mail deve conter ao menos 2 caracteres.");
             }
-        
             if (this.objetoamigo.insertAmigoBD(nome, telefone, email)) {
                 JOptionPane.showMessageDialog(null, "Amigo Cadastrado com Sucesso!");
                 this.jTFamigo_nome.setText("");
                 this.jTFamigo_telefone.setText("");
                 this.jTFamigo_email.setText("");
             } else {
-            JOptionPane.showMessageDialog(null, "Falha ao cadastrar amigo.");
+                JOptionPane.showMessageDialog(null, "Falha ao cadastrar amigo.");
             }
             System.out.println(this.objetoamigo.getMinhaLista().toString());
         } catch (Mensagens erro) {

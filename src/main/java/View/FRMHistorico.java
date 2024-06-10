@@ -17,8 +17,7 @@ public class FRMHistorico extends javax.swing.JFrame {
         this.objetoemprestimo = new Emprestimo();
         this.carregaTabela();
         System.out.println("Objeto emprestimo inicializado: " + (objetoemprestimo != null));
-    // Chama o método para preencher o campo de texto na inicialização
-    preencherCampoAmigoComMaisEmprestimos();
+        preencherCampoAmigoComMaisEmprestimos();
     }
     
     /**
@@ -120,16 +119,12 @@ public class FRMHistorico extends javax.swing.JFrame {
             String nome = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 1).toString();
             String telefone = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 2).toString();
             String ferramenta = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 3).toString();
-        
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        
             String dataRetiradaString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 4).toString();
             String dataPrevistaDevolucaoString = this.jThistorico.getValueAt(this.jThistorico.getSelectedRow(), 5).toString();
-
             try {
                 Date dataRetirada = sdf.parse(dataRetiradaString);
                 Date dataPrevistaDevolucao = sdf.parse(dataPrevistaDevolucaoString);
-                // Agora você pode usar dataRetirada e dataPrevistaDevolucao conforme necessário
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -138,43 +133,40 @@ public class FRMHistorico extends javax.swing.JFrame {
 
     private void jTFhistorico_maisEmprestimosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFhistorico_maisEmprestimosActionPerformed
         System.out.println("Ação do jTextField1 disparada");
-    String amigoComMaisEmprestimos = objetoemprestimo.getAmigoComMaisEmprestimos();
-    System.out.println("Amigo com mais empréstimos: " + amigoComMaisEmprestimos);
-    if (amigoComMaisEmprestimos != null) {
-        jTFhistorico_maisEmprestimos.setText(amigoComMaisEmprestimos);
-    } else {
-        jTFhistorico_maisEmprestimos.setText("Nenhum amigo encontrado");
-    }
+        String amigoComMaisEmprestimos = objetoemprestimo.getAmigoComMaisEmprestimos();
+        System.out.println("Amigo com mais empréstimos: " + amigoComMaisEmprestimos);
+        if (amigoComMaisEmprestimos != null) {
+            jTFhistorico_maisEmprestimos.setText(amigoComMaisEmprestimos);
+        } else {
+            jTFhistorico_maisEmprestimos.setText("Nenhum amigo encontrado");
+        }
     }//GEN-LAST:event_jTFhistorico_maisEmprestimosActionPerformed
 
     public void carregaTabela() {
-    DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();
-    modelo.setNumRows(0);
-    ArrayList<Emprestimo> minhalista = objetoemprestimo.getMinhaLista();
-
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-    for (Emprestimo a : minhalista) {
-        modelo.addRow(new Object[]{
-            a.getId(),
-            a.getNomeAmigo(),
-            a.getTelefone(), // Incluindo o telefone
-            a.getNomeFerramenta(),
-            sdf.format(a.getDataRetirada()),
-            sdf.format(a.getDataPrevistaDevolucao())
-        });
+        DefaultTableModel modelo = (DefaultTableModel) this.jThistorico.getModel();
+        modelo.setNumRows(0);
+        ArrayList<Emprestimo> minhalista = objetoemprestimo.getMinhaLista();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        for (Emprestimo a : minhalista) {
+            modelo.addRow(new Object[]{
+                a.getId(),
+                a.getNomeAmigo(),
+                a.getTelefone(),
+                a.getNomeFerramenta(),
+                sdf.format(a.getDataRetirada()),
+                sdf.format(a.getDataPrevistaDevolucao())
+            });
+        }
     }
-}
-
     
     private void preencherCampoAmigoComMaisEmprestimos() {
-    String amigoComMaisEmprestimos = objetoemprestimo.getAmigoComMaisEmprestimos();
-    if (amigoComMaisEmprestimos != null) {
-        jTFhistorico_maisEmprestimos.setText(amigoComMaisEmprestimos);
-    } else {
-        jTFhistorico_maisEmprestimos.setText("Nenhum amigo encontrado");
+        String amigoComMaisEmprestimos = objetoemprestimo.getAmigoComMaisEmprestimos();
+        if (amigoComMaisEmprestimos != null) {
+            jTFhistorico_maisEmprestimos.setText(amigoComMaisEmprestimos);
+        } else {
+            jTFhistorico_maisEmprestimos.setText("Nenhum amigo encontrado");
+        }
     }
-}
 
    
     public static void main(String args[]) {
